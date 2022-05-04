@@ -30,7 +30,7 @@ export const UPDATE_PROJECT = gql`
 
 //Update Component Department
 export const UPDATE_DEPARTMENT = gql`
-  mutation updateProject(
+  mutation updateDepartment(
     $departmentId: ID!
     $departmentno: String
     $departmentname: String

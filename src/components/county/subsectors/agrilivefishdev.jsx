@@ -1,13 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../context/auth";
 import { useQuery } from "@apollo/react-hooks";
-import {
-  LOAD_PROJECTS,
-  LOAD_ACTIVITIES,
-  LOAD_TRAININGS,
-} from "../../../graphql/queries";
+import { LOAD_PROJECTS } from "../../../graphql/projects";
+import { LOAD_ACTIVITIES } from "../../../graphql/activities";
+import { LOAD_TRAININGS } from "../../../graphql/trainings";
 import { Row, Col, Button } from "react-bootstrap";
-import LeftMenusGeneral from "../../leftmenusgeneral";
+import LeftMenusGeneral from "../../../menus/leftmenusgeneral";
 import VisionBody from "../../county/dashboard/visionbody";
 import DashBoardRsideMenu from "../../../components/dashboard/dashboardrsidemenu";
 import AgriliveFishDevStrategies from "./strategicpriorities/agrilivesishdev";
@@ -51,7 +49,7 @@ const AgriliveFishDev = () => {
 
   useEffect(() => {
     if (trainingsdata) {
-      setActivities(trainingsdata.getTrainings);
+      setTrainings(trainingsdata.getTrainings);
     }
   }, [trainingsdata]);
 
@@ -66,9 +64,9 @@ const AgriliveFishDev = () => {
           </Col>
           <Col md="9">
             <Row>
-              <Col>
-                <div className="sectiondescription">
-                  <Row className="m-2">
+              <Col className="sectiondescription">
+                <div className="m-2">
+                  <Row className="m-5">
                     <h1>Agriculture, Livestock, Fisheries and Irrigation </h1>
                   </Row>
                 </div>

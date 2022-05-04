@@ -1,34 +1,17 @@
 import { Redirect, Route, Switch } from "react-router-dom";
-import Login from "./components/login";
-import DashBoard from "./components/dashboard";
+
+//App Global Routes
+import Login from "./login/login";
+import Footer from "./components/footer";
+import NotFound from "./components/notfound";
+import AuthRoute from "./utils/AuthRoute";
+import MainHome from "./components/dashboard/main";
+
+//County Global Routes
 import CountyMission from "./components/county/countymission";
 import CountyVision from "./components/county/countyvision";
 import CountyGoals from "./components/county/countygoals";
-import Roles from "./components/accounts/roles";
-import Department from "./components/accounts/department";
-import AddProject from "./components/projects/addproject";
-import EditProject from "./components/projects/editProject";
-import Projects from "./components/projects/projects";
-import AddActivity from "./components/activities/addactivity";
-import EditActivity from "./components/activities/editactivity";
-import Activities from "./components/activities/activities";
-import EditTarget from "./components/targets/edittarget";
-import AddTraining from "./components/trainings/addtraining";
-import EditTraining from "./components/trainings/edittraining";
-import Trainings from "./components/trainings/trainings";
-import SelfAppraisal from "./components/appraisals/selfappraisal";
-import SupervisorAppraisal from "./components/appraisals/supervisorappraisal";
-import SupervisorAppraisees from "./components/appraisals/supervisorappraisees";
-import CommitteeAppraisal from "./components/appraisals/committeeappraisal";
-import Appraisals from "./components/appraisals/appraisals";
-import AppraisalReviewMeeting from "./components/appraisals/appraisalreviewmeeting";
-import Footer from "./components/footer";
-import NotFound from "./components/notfound";
-import EditDepartment from "./components/accounts/editdepartment";
-import JobGroup from "./components/accounts/jobgroup";
-import EditJobGroup from "./components/accounts/editjobgroup";
-import Designation from "./components/accounts/designation";
-import EditDesignation from "./components/accounts/editdesignation";
+import Sectors from "./components/county/sectors";
 import AgriliveFishDev from "./components/county/subsectors/agrilivefishdev";
 import WaterEnergyEnv from "./components/county/subsectors/waterenergyenv";
 import HealthServices from "./components/county/subsectors/healthservices";
@@ -38,21 +21,73 @@ import EducationVocationalTraining from "./components/county/subsectors/educatio
 import FinanceEconomicPlanning from "./components/county/subsectors/financeeconomicplanning";
 import OfficeofGovDpGov from "./components/county/subsectors/officeofgovdpgov";
 import CountyAssembley from "./components/county/subsectors/countyassembley";
-import AddActivityTask from "./components/activities/addactivitytask";
-import Tasks from "./components/activities/tasks";
-import Targets from "./components/targets/targets";
-import StaffReponse from "./components/appraisals/staffresponse";
-import Register from "./components/accounts/registarstaff";
-import AuthRoute from "./utils/AuthRoute";
 
-import Users from "./components/accounts/users";
-import PerformanceContracts from "./components/projects/contracts";
-import JointReview from "./components/appraisals/jointreview";
-import CountyserviceBoard from "./components/appraisals/countyserviceboard";
-import SupervisorResponse from "./components/appraisals/supervisorresponse";
+//Accounts
+import Register from "./components/accounts/registarstaff";
 import Employees from "./components/accounts/users";
+import Roles from "./components/accounts/roles";
+import Department from "./components/accounts/department";
+import EditDepartment from "./components/accounts/editdepartment";
+import JobGroup from "./components/accounts/jobgroup";
+import EditJobGroup from "./components/accounts/editjobgroup";
+import Designation from "./components/accounts/designation";
+import EditDesignation from "./components/accounts/editdesignation";
+
+//Projects & Contracts
+import AddProject from "./components/projects/systemadmin/addproject";
+import EditProject from "./components/projects/systemadmin/editProject";
+import Projects from "./components/projects/systemadmin/projects";
+import DepartmentalProjects from "./components/projects/systemadmin/departmentalprojects";
+import PerformanceContracts from "./components/projects/systemadmin/contracts";
+import DepartmentalPerformanceContracts from "./components/projects/systemadmin/departmentalcontracts";
+import UserProjects from "./components/projects/user/userprojects";
+import ProjectInfo from "./components/projects/user/projectinfo";
+import UserPerformanceContracts from "./components/projects/user/usercontracts";
+
+//Activities & Task Routes
+import AddActivity from "./components/activities/systemadmin/addactivity";
+import EditActivity from "./components/activities/systemadmin/editactivity";
+import Activities from "./components/activities/systemadmin/activities";
+import DepartmentalActivities from "./components/activities/systemadmin/departmentalactivities";
+import UserActivities from "./components/activities/user/useractivities";
+import UserDepartmentalActivities from "./components/activities/user/userdepartmentalactivities";
+import ActivityInfo from "./components/activities/user/activityinfo";
+
+//Tasks
+import Tasks from "./components/activities/tasks/tasks";
+import AddActivityTask from "./components/activities/tasks/addactivitytask";
+import SystemAdminTasks from "./components/activities/tasks/systemadmin/systemadmintasks";
+import SupervisorTasks from "./components/activities/tasks/supervisor/supervisortasks";
+import UserTasks from "./components/activities/tasks/users/usertasks";
+import SupervisorAppraiseesTasks from "./components/activities/tasks/supervisor/supervisorappraiseestasks";
+import SystemAdminAppraiseeTasks from "./components/activities/tasks/systemadmin/systemadminappraiseestasks";
+
+//Targets Routes
+import Targets from "./components/targets/targets";
 import TargetReview from "./components/targets/targetreviews";
-import SupervisorjointreviewAppraisee from "./components/appraisals/supervisorjointreviewappraisee";
+import EditTarget from "./components/targets/edittarget";
+
+//Appraisals
+import SelfAppraisal from "./components/appraisals/user/selfappraisal";
+import SupervisorAppraisal from "./components/appraisals/supervisor/supervisorappraisal";
+import SupervisorAppraisees from "./components/appraisals/supervisor/supervisorappraisees";
+import CommitteeAppraisal from "./components/appraisals/committee/committeeappraisal";
+import Appraisals from "./components/appraisals/user/appraisals";
+import AppraisalReviewMeeting from "./components/appraisals/jointappraisals/appraisalreviewmeeting";
+import StaffReponse from "./components/appraisals/user/staffresponse";
+import JointReview from "./components/appraisals/jointappraisals/jointreview";
+import CountyserviceBoard from "./components/appraisals/countyserviceboard/countyserviceboard";
+import SupervisorResponse from "./components/appraisals/supervisor/supervisorresponse";
+import SupervisorjointreviewAppraisee from "./components/appraisals/jointappraisals/supervisorjointreviewappraisee";
+import SystemadminAppraisees from "./components/appraisals/systemadmin/systemadminappraisees";
+import SystemadminjointreviewAppraisee from "./components/appraisals/systemadmin/systemadminappraisees";
+
+//Trainings
+
+import AddTraining from "./components/trainings/addtraining";
+import EditTraining from "./components/trainings/edittraining";
+import Trainings from "./components/trainings/trainings";
+import DepartmentalTrainings from "./components/trainings/departmentaltrainings";
 
 function PfmsRoutes() {
   return (
@@ -60,7 +95,7 @@ function PfmsRoutes() {
       <Switch>
         {/* Main DashBoard */}
 
-        <AuthRoute path="/dashboard" component={DashBoard} />
+        <AuthRoute path="/dashboard" component={MainHome} />
         <Route path="/login" component={Login} />
         <Redirect from="/" exact to="/login" />
 
@@ -68,6 +103,7 @@ function PfmsRoutes() {
         <AuthRoute exact path="/countymission" component={CountyMission} />
         <AuthRoute path="/countyvision" component={CountyVision} />
         <AuthRoute path="/countyGoals" component={CountyGoals} />
+        <AuthRoute path="/sectors" component={Sectors} />
 
         {/* SubSector Goals */}
         <AuthRoute path="/agrilivefishdev" component={AgriliveFishDev} />
@@ -89,7 +125,7 @@ function PfmsRoutes() {
         <AuthRoute path="/officeofgovdpgov" component={OfficeofGovDpGov} />
         <AuthRoute path="/countyassembley" component={CountyAssembley} />
 
-        {/* County Employees Sectors & Departments */}
+        {/*Accounts*/}
         <AuthRoute exact path="/register" component={Register} />
         <AuthRoute path="/employees" component={Employees} />
         <AuthRoute path="/roles" component={Roles} />
@@ -107,35 +143,72 @@ function PfmsRoutes() {
         <AuthRoute path="/jobgroups" component={JobGroup} />
         <AuthRoute path="/jobgroup/:jobgroupId" component={EditJobGroup} />
 
-        {/* Sub Sector Routes */}
-
-        {/* County Programmes Projects Targets Workplans and  Activities Training */}
+        {/*Projects & Contracts*/}
         <AuthRoute path="/addproject" component={AddProject} />
         <AuthRoute path="/projects" component={Projects} />
+        <AuthRoute
+          path="/departmentalprojects"
+          component={DepartmentalProjects}
+        />
         <AuthRoute path="/contracts" component={PerformanceContracts} />
+        <AuthRoute
+          path="/departmentalperformancecontracts"
+          component={DepartmentalPerformanceContracts}
+        />
         <AuthRoute path="/project/:projectId" component={EditProject} />
+        <AuthRoute path="/userprojects" component={UserProjects} />
+        <AuthRoute
+          exact
+          path="/userproject/:projectId"
+          component={ProjectInfo}
+        />
+        <AuthRoute path="/usercontracts" component={UserPerformanceContracts} />
+        {/*Activities*/}
         <AuthRoute path="/addactivity" component={AddActivity} />
         <AuthRoute path="/editactivity" component={EditActivity} />
         <AuthRoute path="/activities" component={Activities} />
+        <AuthRoute
+          path="/departmentalactivities"
+          component={DepartmentalActivities}
+        />
         <AuthRoute
           exact
           path="/activity/:activityId"
           component={EditActivity}
         />
+
+        <AuthRoute path="/useractivities" component={UserActivities} />
+        <AuthRoute
+          path="/userdepartmentalactivities"
+          component={UserDepartmentalActivities}
+        />
+        <AuthRoute
+          exact
+          path="/useractivity/:activityId"
+          component={ActivityInfo}
+        />
+
+        {/*Tasks*/}
         <AuthRoute path="/addtasks" component={AddActivityTask} />
-        <AuthRoute path="/tasks" component={Tasks} />
+        <AuthRoute path="/tasks/:id" component={Tasks} />
         <AuthRoute path="/task/:taskId" component={EditActivity} />
+        <AuthRoute
+          path="/systemadmintasks/:userId"
+          component={SystemAdminTasks}
+        />
+        <AuthRoute
+          path="/supervisortasks/:userId"
+          component={SupervisorTasks}
+        />
+        <AuthRoute path="/usertasks" component={UserTasks} />
+
+        {/*Targets*/}
         <AuthRoute path="/edittarget" component={EditTarget} />
         <AuthRoute path="/targets" component={Targets} />
         <AuthRoute path="/targetreviews" component={TargetReview} />
         <AuthRoute path="/target/:targetId" component={EditTarget} />
-        <AuthRoute path="/addtraining" component={AddTraining} />
-        <AuthRoute path="/edittraining" component={EditTraining} />
-        <AuthRoute path="/trainings" component={Trainings} />
-        <AuthRoute path="/training/:trainingId" component={EditTraining} />
 
-        {/* Staff Appraisal Feedback and Rewvies */}
-
+        {/*Appraisals*/}
         <AuthRoute path="/selfappraisal" component={SelfAppraisal} />
         <AuthRoute path="/staffresponse" component={StaffReponse} />
         <AuthRoute path="/supervisorresponse" component={SupervisorResponse} />
@@ -144,23 +217,50 @@ function PfmsRoutes() {
           component={SupervisorAppraisees}
         />
         <AuthRoute
+          path="/supervisorappraiseestasks"
+          component={SupervisorAppraiseesTasks}
+        />
+        <AuthRoute
+          path="/systemadminappraiseetasks"
+          component={SystemAdminAppraiseeTasks}
+        />
+        <AuthRoute
           path="/supervisorappraisalsjointreviews"
           component={SupervisorjointreviewAppraisee}
         />
-        <AuthRoute path="/jointreview/:id" component={JointReview} />
+        <AuthRoute
+          path="/systemadminappraisees"
+          component={SystemadminAppraisees}
+        />
+        <AuthRoute
+          path="/systemadminappraisalsjointreviews"
+          component={SystemadminjointreviewAppraisee}
+        />
+        <AuthRoute path="/jointreview/:userId" component={JointReview} />
         <AuthRoute
           path="/appraisalreviewmeeting"
           component={AppraisalReviewMeeting}
         />
-        {/* General Routes */}
-
         <AuthRoute
-          path="/supervisorappraisal/:id"
+          path="/supervisorappraisal/:userId"
           component={SupervisorAppraisal}
         />
+
         <AuthRoute path="/committeeappraisal" component={CommitteeAppraisal} />
         <AuthRoute path="/countyserviceboard" component={CountyserviceBoard} />
         <AuthRoute path="/appraisals" component={Appraisals} />
+
+        {/*Trainings*/}
+        <AuthRoute path="/addtraining" component={AddTraining} />
+        <AuthRoute path="/edittraining" component={EditTraining} />
+        <AuthRoute path="/trainings" component={Trainings} />
+        <AuthRoute
+          path="/departmentaltrainings"
+          component={DepartmentalTrainings}
+        />
+        <AuthRoute path="/training/:trainingId" component={EditTraining} />
+
+        {/* General Routes */}
         <AuthRoute path="/not-Found" component={NotFound} />
         <Redirect to="/not-Found" />
       </Switch>

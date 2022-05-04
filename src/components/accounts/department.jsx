@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/auth";
 import { useQuery } from "@apollo/client";
-import { LOAD_DEPARTMENTS } from "../../graphql/queries";
+import { LOAD_DEPARTMENTS, ADD_DEPARTMENT } from "../../graphql/departments";
 import { useMutation } from "@apollo/client";
-import { ADD_DEPARTMENT } from "../../graphql/mutations";
 
 import {
   Col,
@@ -13,7 +12,7 @@ import {
   Form,
   FormControl,
 } from "react-bootstrap";
-import LeftMenusGeneral from "../../components/leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import DepartmentTable from "./departmentTable";
 import _ from "lodash";
 import Pagination from "../../common/pagination";

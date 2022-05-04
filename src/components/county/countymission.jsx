@@ -1,17 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/auth";
 import { useQuery } from "@apollo/react-hooks";
-import {
-  LOAD_PROJECTS,
-  LOAD_ACTIVITIES,
-  LOAD_TRAININGS,
-} from "../../graphql/queries";
+import { LOAD_PROJECTS } from "../../graphql/projects";
+import { LOAD_ACTIVITIES } from "../../graphql/activities";
+import { LOAD_TRAININGS } from "../../graphql/trainings";
 
-import LeftMenusGeneral from "../../components/leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import { Row, Col, Button } from "react-bootstrap";
 import DashBoardRsideMenu from "../../components/dashboard/dashboardrsidemenu";
 import MissionBody from "./dashboard/missionbody";
-import context from "react-bootstrap/esm/AccordionContext";
 
 const CountyMission = () => {
   const user = useContext(AuthContext);
@@ -53,7 +50,7 @@ const CountyMission = () => {
 
   useEffect(() => {
     if (trainingsdata) {
-      setActivities(trainingsdata.getTrainings);
+      setTrainings(trainingsdata.getTrainings);
     }
   }, [trainingsdata]);
 

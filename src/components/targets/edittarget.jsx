@@ -11,7 +11,7 @@ import Table from "react-bootstrap/Table";
 import Toggle from "../../common/toggle";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
-import LeftMenusGeneral from "../../components/leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 
 const EditTargets = () => {
   const [validated, setValidated] = useState(false);

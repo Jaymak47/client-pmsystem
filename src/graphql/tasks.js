@@ -38,8 +38,22 @@ export const LOAD_DEPARTMENTALTASKS = gql`
     }
   }
 `;
+//User Based Tasks
+export const useTasks = (userId) => {
+  const { data, error, loading } = useQuery(LOAD_TASKS, {
+    variables: {
+      userId,
+    },
+  });
+  return {
+    data,
+    error,
+    loading,
+  };
+};
 
-export const useTasks = (departmentId) => {
+//Departmental Based Tasks
+export const useDepartmentalTasks = (departmentId) => {
   const { data, error, loading } = useQuery(LOAD_DEPARTMENTALTASKS, {
     variables: {
       departmentId,
@@ -51,6 +65,7 @@ export const useTasks = (departmentId) => {
     loading,
   };
 };
+
 //Add Component Project
 export const ADD_TARGET = gql`
   mutation createProject(
@@ -80,6 +95,36 @@ export const ADD_TARGET = gql`
       enddate
       agreedPerformance
       performanceIndicator
+    }
+  }
+`;
+
+export const ADD_TASK = gql`
+  mutation createTask(
+    $taskno: String!
+    $taskname: String!
+    $activity: String!
+    $startdate: DateTime!
+    $enddate: DateTime!
+  ) {
+    createTask(
+      createTaskInput: {
+        taskno: $taskno
+        taskname: $taskname
+        activity: $activity
+        startdate: $startdate
+        enddate: $enddate
+      }
+    ) {
+      id
+      taskno
+      taskname
+      activity {
+        activityname
+      }
+      startdate
+      enddate
+      createdAt
     }
   }
 `;

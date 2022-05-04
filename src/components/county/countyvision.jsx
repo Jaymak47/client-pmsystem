@@ -1,35 +1,33 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/auth";
 import { useQuery } from "@apollo/react-hooks";
-import {
-  LOAD_PROJECTS,
-  LOAD_ACTIVITIES,
-  LOAD_TRAININGS,
-} from "../../graphql/queries";
+import { useProjects } from "../../graphql/projects";
+import { useActivities } from "../../graphql/activities";
+import { useTrainings } from "../../graphql/trainings";
 import { Row, Col, Button } from "react-bootstrap";
-import LeftMenusGeneral from "../../components/leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import VisionBody from "../../components/county/dashboard/visionbody";
-import DashBoardRsideMenu from "../../components/dashboard/dashboardrsidemenu";
+import DashBoardRsideMenu from "../dashboard/dashboardrsidemenu";
 
 const CountyVision = () => {
   const user = useContext(AuthContext);
   const {
-    error: errorProjects,
+    error,
     loading: loadingProjects,
     data: projectsdata,
-  } = useQuery(LOAD_PROJECTS);
+  } = useProjects(user.user.department);
 
   const {
-    error: errorActivities,
-    loading: loadingActivities,
+    error: activityError,
     data: activitiesdata,
-  } = useQuery(LOAD_ACTIVITIES);
+    loading: loadingActivities,
+  } = useActivities(user.user.department);
 
   const {
-    error: errorTrainings,
+    error: trainingserrors,
+    data: trainingsData,
     loading: loadingTrainings,
-    data: trainingsdata,
-  } = useQuery(LOAD_TRAININGS);
+  } = useTrainings(user.user.department);
 
   const [projects, setProjects] = useState([]);
   const [trainings, setTrainings] = useState([]);
@@ -51,10 +49,10 @@ const CountyVision = () => {
   }, [activitiesdata]);
 
   useEffect(() => {
-    if (trainingsdata) {
-      setActivities(trainingsdata.getTrainings);
+    if (trainingsData) {
+      setTrainings(trainingsData.getTrainings);
     }
-  }, [trainingsdata]);
+  }, [trainingsData]);
 
   return (
     <div>

@@ -3,6 +3,7 @@ import moment from "moment";
 import Table from "../../common/table";
 import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import EditTarget from "./edittarget";
+import DeleteButton from "./deletebuttontargets";
 
 const TargetTable = ({
   targets,
@@ -13,6 +14,7 @@ const TargetTable = ({
   handleClose,
   loading,
   handleShow,
+  userId,
 }) => {
   let numbering = 1;
   const columns = [
@@ -41,18 +43,33 @@ const TargetTable = ({
     {
       key: "targets",
       label: "Actions",
-      content: () => (
-        <OverlayTrigger overlay={<Tooltip id={`tooltip-top`}>Edit</Tooltip>}>
-          <button
+      content: (target) => (
+        <OverlayTrigger
+          overlay={<Tooltip id={`tooltip-top`}>Delete Target</Tooltip>}
+        >
+          <DeleteButton
+            targetId={target.id}
+            targetname={target.targetname}
+            userId={userId}
+          />
+
+          {/* <button
             onClick={handleShow}
             className="btn text-warning btn-act"
             data-toggle="modal"
           >
             <i className="material-icons">&#xE254;</i>
-          </button>
+          </button> */}
         </OverlayTrigger>
       ),
     },
+    // {
+    //   path: "projectno",
+    //   label: "Project No",
+    //   content: (project) => (
+    //     <Link to={`/project/${project.id}`}>{project.projectno}</Link>
+    //   ),
+    // },
   ];
 
   if (loading) {

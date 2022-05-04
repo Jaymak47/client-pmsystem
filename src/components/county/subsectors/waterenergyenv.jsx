@@ -1,17 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../context/auth";
 import { useQuery } from "@apollo/react-hooks";
-import {
-  LOAD_PROJECTS,
-  LOAD_ACTIVITIES,
-  LOAD_TRAININGS,
-} from "../../../graphql/queries";
+import { LOAD_PROJECTS } from "../../../graphql/projects";
+import { LOAD_ACTIVITIES } from "../../../graphql/activities";
+import { LOAD_TRAININGS } from "../../../graphql/trainings";
 import { Row, Col, Button } from "react-bootstrap";
 
-import LeftMenusGeneral from "../../leftmenusgeneral";
+import LeftMenusGeneral from "../../../menus/leftmenusgeneral";
 import VisionBody from "../dashboard/visionbody";
 import DashBoardRsideMenu from "../../../components/dashboard/dashboardrsidemenu";
-import AgriliveFishDevStrategies from "./strategicpriorities/agrilivesishdev";
+import WaterEnergyStrategies from "./strategicpriorities/waterenergyenv";
 
 const WaterEnergyEnv = () => {
   const user = useContext(AuthContext);
@@ -52,7 +50,7 @@ const WaterEnergyEnv = () => {
 
   useEffect(() => {
     if (trainingsdata) {
-      setActivities(trainingsdata.getTrainings);
+      setTrainings(trainingsdata.getTrainings);
     }
   }, [trainingsdata]);
   return (
@@ -66,10 +64,13 @@ const WaterEnergyEnv = () => {
           </Col>
           <Col md="9">
             <Row>
-              <Col>
-                <div className="sectiondescription">
-                  <Row className="m-2">
-                    <h1>Water, Energy {"&"} Enviroment</h1>
+              <Col className="sectiondescription">
+                <div className="m-2">
+                  <Row className="m-5">
+                    <h1>
+                      Water, Sanitation, Energy, Environment, Natural Resource
+                      and Climate Change
+                    </h1>
                   </Row>
                 </div>
               </Col>
@@ -93,8 +94,9 @@ const WaterEnergyEnv = () => {
                     <strong>Vision</strong>{" "}
                   </h4>
                   <h5 className="tabcontentdisplay">
-                    Food secure and wealthy county anchored on an innovative,
-                    commercially oriented and competitive agriculture sector.
+                    A vibrant County free of water crisis, green energy
+                    sufficient, adaptive to climate change, sustainably
+                    utilizing environment and its natural resources
                   </h5>
                 </Row>
                 <Row className=" adddataform1">
@@ -102,10 +104,9 @@ const WaterEnergyEnv = () => {
                     <strong>Mission</strong>{" "}
                   </h4>
                   <h5 className="tabcontentdisplay">
-                    To improve the livelihood of Kenyans and ensure food and
-                    nutrition security through creation of an enabling
-                    environment and ensuring sustainable natural resource
-                    management.
+                    To facilitate and promote sustainable utilization and
+                    management of water, energy, environment and natural
+                    resources for socio-economic development
                   </h5>
                 </Row>
                 <Row className=" adddataform">
@@ -113,12 +114,10 @@ const WaterEnergyEnv = () => {
                     <strong>Goal</strong>{" "}
                   </h4>
                   <h5 className="tabcontentdisplay">
-                    To attain food and nutrition security and income through
-                    increased production and value addition in livestock,
-                    agriculture and fisheries investments
+                    Sustainable development in a clean and secure environment
                   </h5>
                 </Row>
-                <AgriliveFishDevStrategies />
+                <WaterEnergyStrategies />
                 <VisionBody />
               </Col>
               <Col lg="3">

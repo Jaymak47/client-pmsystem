@@ -13,7 +13,7 @@ import {
   FormControl,
   InputGroup,
 } from "react-bootstrap";
-import LeftMenusGeneral from "../leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import Pagination from "../../common/pagination";
 import { paginate } from "../../utils/paginate";
 import "semantic-ui-css/semantic.min.css";
@@ -40,7 +40,7 @@ const Trainings = () => {
     error: trainingserrors,
     data: trainingsData,
     loading: loadingTrainings,
-  } = useTrainings(user.user.department);
+  } = useTrainings();
   //Load Data from the Server
 
   useEffect(() => {
@@ -168,7 +168,7 @@ const Trainings = () => {
               <Form noValidate validated={validated} onSubmit={onSubmit}>
                 <Row className="m-2 adddataform">
                   <Row className="m-3">
-                    <h2>Training Details</h2>
+                    <h2>County Trainings</h2>
                     <Col md="12">
                       <h3 className="leading sectiondescription">
                         Add a <strong> Training</strong> to the System

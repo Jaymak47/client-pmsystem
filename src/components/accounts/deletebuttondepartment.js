@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 import { Button, Icon } from "semantic-ui-react";
-import { LOAD_DEPARTMENTS } from "../../graphql/queries";
+import { LOAD_DEPARTMENTS, DELETE_DEPARTMENT } from "../../graphql/departments";
 import { OverlayTrigger, Tooltip, Modal } from "react-bootstrap";
 import { useHistory } from "react-router";
 
@@ -64,11 +64,5 @@ function DeleteButton({ departmentId, callback, departmentname }) {
     </>
   );
 }
-
-const DELETE_DEPARTMENT = gql`
-  mutation deleteDepartment($departmentId: ID!) {
-    deleteDepartment(departmentId: $departmentId)
-  }
-`;
 
 export default DeleteButton;

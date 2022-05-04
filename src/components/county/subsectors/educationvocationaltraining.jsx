@@ -1,16 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../context/auth";
 import { useQuery } from "@apollo/react-hooks";
-import {
-  LOAD_PROJECTS,
-  LOAD_ACTIVITIES,
-  LOAD_TRAININGS,
-} from "../../../graphql/queries";
+import { LOAD_PROJECTS } from "../../../graphql/projects";
+import { LOAD_ACTIVITIES } from "../../../graphql/activities";
+import { LOAD_TRAININGS } from "../../../graphql/trainings";
 import { Row, Col, Button } from "react-bootstrap";
-import LeftMenusGeneral from "../../leftmenusgeneral";
+import LeftMenusGeneral from "../../../menus/leftmenusgeneral";
 import VisionBody from "../dashboard/visionbody";
 import DashBoardRsideMenu from "../../../components/dashboard/dashboardrsidemenu";
-import AgriliveFishDevStrategies from "./strategicpriorities/agrilivesishdev";
+import EducationVocationalStrategies from "./strategicpriorities/educationvocationaltraining";
 
 const EducationVocationalTraining = () => {
   const user = useContext(AuthContext);
@@ -51,7 +49,7 @@ const EducationVocationalTraining = () => {
 
   useEffect(() => {
     if (trainingsdata) {
-      setActivities(trainingsdata.getTrainings);
+      setTrainings(trainingsdata.getTrainings);
     }
   }, [trainingsdata]);
   return (
@@ -65,10 +63,13 @@ const EducationVocationalTraining = () => {
           </Col>
           <Col md="9">
             <Row>
-              <Col>
-                <div className="sectiondescription">
-                  <Row className="m-2">
-                    <h1>Education {"&"} Vocational Training</h1>
+              <Col className="sectiondescription">
+                <div className="m-2">
+                  <Row className="m-5">
+                    <h1>
+                      Education, Youth, Sports, Gender, Culture and Social
+                      Services
+                    </h1>
                   </Row>
                 </div>
               </Col>
@@ -117,7 +118,7 @@ const EducationVocationalTraining = () => {
                     agriculture and fisheries investments
                   </h5>
                 </Row>
-                <AgriliveFishDevStrategies />
+                <EducationVocationalStrategies />
                 <VisionBody />
               </Col>
               <Col lg="3">

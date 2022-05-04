@@ -11,10 +11,13 @@ import {
   FormControl,
 } from "react-bootstrap";
 import { AuthContext } from "../../context/auth";
-import { LOAD_DEPARTMENTS, useDepartment } from "../../graphql/queries";
-import { UPDATE_DEPARTMENT } from "../../graphql/mutations";
+import {
+  LOAD_DEPARTMENTS,
+  useDepartment,
+  UPDATE_DEPARTMENT,
+} from "../../graphql/departments";
 import DeleteButton from "./deletebuttondepartment";
-import LeftMenusGeneral from "../leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import { useForm } from "../../utils/hooks";
 
 const EditDepartment = (props) => {

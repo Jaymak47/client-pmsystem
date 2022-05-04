@@ -57,6 +57,5 @@
   },
   "devDependencies": {
     "jshint": "^2.13.1"
-  },
-  "proxy": "https://gentle-gorge-53576.herokuapp.com"
+  }
 }

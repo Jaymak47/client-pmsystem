@@ -1,8 +1,32 @@
 import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/react-hooks";
 
 export const LOAD_TARGETS = gql`
   query ($userId: ID!) {
     getUser(userId: $userId) {
+      id
+      targets {
+        id
+        targetname
+        targetno
+        startdate
+        enddate
+        agreedPerformance
+        performanceIndicator
+        task {
+          taskname
+        }
+        selfScore
+        supervisorScore
+        jointScore
+      }
+    }
+  }
+`;
+
+export const ALL_TARGETS = gql`
+  query getTargets {
+    getTargets {
       id
       targets {
         id
@@ -75,5 +99,65 @@ export const ADD_TARGET = gql`
       agreedPerformance
       performanceIndicator
     }
+  }
+`;
+
+//Targets
+export const useTargets = (userId) => {
+  const { data, error, loading } = useQuery(LOAD_TARGETS, {
+    variables: {
+      userId,
+    },
+  });
+  return {
+    data,
+    error,
+    loading,
+  };
+};
+
+//Targets
+export const useTarget = (targetId) => {
+  const { data, error, loading } = useQuery(LOAD_TARGET, {
+    variables: {
+      targetId,
+    },
+  });
+  return {
+    data,
+    error,
+    loading,
+  };
+};
+
+//Update Component Target
+export const UPDATE_TARGET = gql`
+  mutation updateTarget(
+    $targetId: ID!
+    $selfScore: String!
+    $achievedResult: String!
+  ) {
+    updateTarget(
+      targetId: $targetId
+      target: { selfScore: $selfScore, achievedResult: $achievedResult }
+    ) {
+      id
+      targetno
+      targetname
+      agreedPerformance
+      performanceIndicator
+      startdate
+      enddate
+      selfScore
+      supervisorScore
+      jointScore
+      username
+    }
+  }
+`;
+
+export const DELETE_TARGET = gql`
+  mutation deleteTarget($targetId: ID!) {
+    deleteTarget(targetId: $targetId)
   }
 `;

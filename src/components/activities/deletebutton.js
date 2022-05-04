@@ -1,72 +1,72 @@
-import React, { useState } from "react";
-import gql from "graphql-tag";
-import { useMutation } from "@apollo/react-hooks";
-import { Button, Icon } from "semantic-ui-react";
-import { LOAD_ACTIVITIES } from "../../graphql/queries";
-import { OverlayTrigger, Tooltip, Modal } from "react-bootstrap";
-import { useHistory } from "react-router";
+import React, { useState } from 'react';
+import gql from 'graphql-tag';
+import { useMutation } from '@apollo/react-hooks';
+import { Button, Confirm, Icon } from 'semantic-ui-react';
 
-function DeleteButton({ activityId, callback }) {
-  const history = useHistory();
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+import { FETCH_POSTS_QUERY } from '../util/graphql';
+import MyPopup from '../util/MyPopup';
 
-  const [deleteActivity, { error }] = useMutation(DELETE_ACTIVITY, {
+function DeleteButton({ postId, commentId, callback }) {
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
+  const mutation = commentId ? DELETE_COMMENT_MUTATION : DELETE_POST_MUTATION;
+
+  const [deletePostOrMutation] = useMutation(mutation, {
     update(proxy) {
-      const data = proxy.readQuery({ query: LOAD_ACTIVITIES });
-
-      data.getActivities = data.getActivities.filter(
-        (a) => a.id !== activityId
-      );
-      proxy.writeQuery({ query: LOAD_ACTIVITIES, data });
-      history.push("/activities");
+      setConfirmOpen(false);
+      if (!commentId) {
+        const data = proxy.readQuery({
+          query: FETCH_POSTS_QUERY
+        });
+        data.getPosts = data.getPosts.filter((p) => p.id !== postId);
+        proxy.writeQuery({ query: FETCH_POSTS_QUERY, data });
+      }
       if (callback) callback();
     },
     variables: {
-      activityId,
-    },
-    onError(err) {
-      if (err) {
-        return error;
-      }
-    },
+      postId,
+      commentId
+    }
   });
   return (
     <>
-      <OverlayTrigger
-        overlay={<Tooltip id={`tooltip-top`}>Delete Activity</Tooltip>}
-      >
+      <MyPopup content={commentId ? 'Delete comment' : 'Delete post'}>
         <Button
           as="div"
           color="red"
           floated="right"
-          onClick={() => setShow(true)}
+          onClick={() => setConfirmOpen(true)}
         >
           <Icon name="trash" style={{ margin: 0 }} />
         </Button>
-      </OverlayTrigger>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Activity {activityId}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you Sure you want to delete Activity</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={deleteActivity}>
-            Yes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      </MyPopup>
+      <Confirm
+        open={confirmOpen}
+        onCancel={() => setConfirmOpen(false)}
+        onConfirm={deletePostOrMutation}
+      />
     </>
   );
 }
 
-const DELETE_ACTIVITY = gql`
-  mutation deleteActivity($activityId: ID!) {
-    deleteActivity(activityId: $activityId)
+const DELETE_POST_MUTATION = gql`
+  mutation deletePost($postId: ID!) {
+    deletePost(postId: $postId)
+  }
+`;
+
+const DELETE_COMMENT_MUTATION = gql`
+  mutation deleteComment($postId: ID!, $commentId: ID!) {
+    deleteComment(postId: $postId, commentId: $commentId) {
+      id
+      comments {
+        id
+        username
+        createdAt
+        body
+      }
+      commentCount
+    }
   }
 `;
 

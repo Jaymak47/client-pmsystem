@@ -1,33 +1,34 @@
 import ListGroup from "react-bootstrap/ListGroup";
 import React, { useState } from "react";
+import jwtDecode from "jwt-decode";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+
 import { Link } from "react-router-dom";
 import { FaGooglePlay, FaHome } from "react-icons/fa";
 import { GiStairsGoal, GiDiceTarget } from "react-icons/gi";
 import { AiOutlineAim } from "react-icons/ai";
-import { BsPeopleFill } from "react-icons/bs";
+import { ListGroupItem } from "react-bootstrap";
 
 const LeftMenusGeneralUser = () => {
   const [sectors, setSectors] = useState(false);
   const [targets, setTargets] = useState(false);
   const [activity, setActivity] = useState(false);
   const [project, setProject] = useState(false);
-  const [contracts, setContracts] = useState(false);
   const [trainings, setTrainings] = useState(false);
   const [appraisals, setAppraisals] = useState(false);
   const [reviews, setReviews] = useState(false);
   const [feedback, setFeedback] = useState(false);
 
   return (
-    <Row className="d-sm-none d-md-block m-2">
-      <>
-        <Col className="mt-1">
+    <div className="d-sm-none d-md-block">
+      <Row>
+        <Col>
           <ListGroup>
             {/* Isiolo County Vision Mission Goals Sectors Objectives*/}
 
             <ListGroup.Item className="list-group-item-success p-3">
-              <h3>County Goals, Objectives </h3>
+              <h6>County Goals, Objectives </h6>
               {/* About us Menu */}
               <>
                 <Link style={{ textDecoration: "none" }} to="/dashboard">
@@ -79,7 +80,7 @@ const LeftMenusGeneralUser = () => {
                 <Col>
                   Sectors / Sub-Sectors / Department Goals
                   {sectors && (
-                    <>
+                    <Row>
                       <Link
                         style={{ textDecoration: "none" }}
                         to="/agrilivefishdev"
@@ -155,170 +156,260 @@ const LeftMenusGeneralUser = () => {
                           County Assembly Services
                         </ListGroup.Item>
                       </Link>
-                    </>
+                    </Row>
                   )}
                 </Col>
               </ListGroup.Item>
             </ListGroup.Item>
-
             <ListGroup.Item className="list-group-item-success p-3">
-              <h3>Work Planner</h3>
-
-              {/* Projects */}
+              <h6>Work Plan </h6>
+              {/* About us Menu */}
+              <ListGroup.Item className="list-group-item-success">
+                <Col>
+                  {/* Projects */}
+                  <Row>
+                    {" "}
+                    <ListGroup.Item
+                      action
+                      id="countyprojects"
+                      onClick={() => setProject(!project)}
+                      className="d-flex "
+                    >
+                      <Col md="1">
+                        <FaGooglePlay style={{ color: "green" }} />
+                      </Col>
+                      <Col>
+                        Projects ....
+                        {project && (
+                          <Row>
+                            <Link
+                              style={{ textDecoration: "none" }}
+                              to="/projects"
+                            >
+                              <ListGroup.Item action>
+                                View Projects
+                              </ListGroup.Item>
+                            </Link>
+                          </Row>
+                        )}
+                      </Col>
+                    </ListGroup.Item>{" "}
+                  </Row>
+                  {/* Activities */}
+                  <Row>
+                    {" "}
+                    <ListGroup.Item
+                      action
+                      id="countyplanning"
+                      onClick={() => setActivity(!activity)}
+                      className="d-flex "
+                    >
+                      <Col md="1">
+                        <FaGooglePlay style={{ color: "green" }} />
+                      </Col>
+                      <Col>
+                        Activities ....
+                        {activity && (
+                          <Row>
+                            <Link
+                              style={{ textDecoration: "none" }}
+                              to="/activities"
+                            >
+                              <ListGroup.Item action>
+                                View Activities
+                              </ListGroup.Item>
+                            </Link>
+                          </Row>
+                        )}
+                      </Col>
+                    </ListGroup.Item>{" "}
+                  </Row>
+                </Col>
+              </ListGroup.Item>
               <>
-                {" "}
-                <ListGroup.Item
-                  action
-                  id="countyprojects"
-                  onClick={() => setProject(!project)}
-                  className="d-flex "
-                >
-                  <Col md="1">
-                    <FaGooglePlay style={{ color: "green" }} />
-                  </Col>
-                  <Col>
-                    <h4>Projects {"&"} Contracts....</h4>
-                    {project && (
-                      <>
-                        <Link style={{ textDecoration: "none" }} to="/projects">
-                          <ListGroup.Item action className="mt-1">
-                            View Projects
-                          </ListGroup.Item>
-                        </Link>
-                        <Link
-                          style={{ textDecoration: "none" }}
-                          to="/contracts"
-                        >
-                          <ListGroup.Item action className="mt-1">
-                            View Performance Contracts
-                          </ListGroup.Item>
-                        </Link>
-                      </>
-                    )}
-                  </Col>
-                </ListGroup.Item>{" "}
-              </>
-
-              {/* Activities */}
-              <>
-                {" "}
-                <ListGroup.Item
-                  action
-                  id="countyplanning"
-                  onClick={() => setActivity(!activity)}
-                  className="d-flex "
-                >
-                  <Col md="1">
-                    <FaGooglePlay style={{ color: "green" }} />
-                  </Col>
-                  <Col>
-                    <h4>Activities {"&"} Tasks....</h4>
-                    {activity && (
-                      <>
-                        <Link
-                          style={{ textDecoration: "none" }}
-                          to="/activities"
-                        >
-                          <ListGroup.Item action>
-                            View Activities
-                          </ListGroup.Item>
-                        </Link>
-                        <Link style={{ textDecoration: "none" }} to="/tasks">
-                          <ListGroup.Item action>View Tasks</ListGroup.Item>
-                        </Link>
-                      </>
-                    )}
-                  </Col>
-                </ListGroup.Item>{" "}
-              </>
-
-              {/* Targets */}
-              <>
-                <Link style={{ textDecoration: "none" }} to="/targets">
-                  <ListGroup.Item className="d-flex ">
+                <Link style={{ textDecoration: "none" }} to="/tasks">
+                  <ListGroup.Item className="d-flex  ">
                     <Col md="1">
-                      <AiOutlineAim style={{ color: "#ee9b00" }} />
+                      <FaHome style={{ color: "#ee9b00" }} />
                     </Col>
-                    <Col>
-                      <h4>View {"&"} Set Targets</h4>
-                    </Col>
+                    <Col>Tasks</Col>
                   </ListGroup.Item>
                 </Link>
-              </>
-              <>
-                <Link style={{ textDecoration: "none" }} to="/targetreviews">
-                  <ListGroup.Item className="d-flex ">
+                <Link style={{ textDecoration: "none" }} to="/targets">
+                  <ListGroup.Item className="d-flex  ">
                     <Col md="1">
-                      <AiOutlineAim style={{ color: "#ee9b00" }} />
+                      <FaHome style={{ color: "#ee9b00" }} />
                     </Col>
-                    <Col>
-                      <h4>Target Reviews</h4>
-                    </Col>
+                    <Col>Targets</Col>
                   </ListGroup.Item>
                 </Link>
               </>
             </ListGroup.Item>
             {/* Staff Appraisal Menu */}
             <ListGroup.Item className="list-group-item-warning">
-              <h3>Staff Appraisal </h3>
+              <h6>Staff Appraisal </h6>
 
               <Col>
                 {/* Staff Appraisal */}
+                <Row>
+                  {" "}
+                  <ListGroup.Item
+                    action
+                    id="staffappraisal"
+                    onClick={() => setAppraisals(!appraisals)}
+                    className="d-flex "
+                  >
+                    <Col md="1">
+                      <FaGooglePlay style={{ color: "green" }} />
+                    </Col>
+                    <Col>
+                      Appraisals ....
+                      {appraisals && (
+                        <Row>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to="/selfappraisal"
+                          >
+                            <ListGroup.Item action>
+                              Staff Self Appraisal
+                            </ListGroup.Item>
+                          </Link>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to="/staffresponse"
+                          >
+                            <ListGroup.Item action>
+                              Staff Response
+                            </ListGroup.Item>
+                          </Link>
 
-                <>
-                  <Link style={{ textDecoration: "none" }} to="/selfappraisal">
-                    <ListGroup.Item className="d-flex ">
-                      <Col md="1">
-                        <AiOutlineAim style={{ color: "#ee9b00" }} />
-                      </Col>
-                      <Col>
-                        <h4>Self Appraisal</h4>
-                      </Col>
-                    </ListGroup.Item>
-                  </Link>
-                </>
-                <>
-                  <Link style={{ textDecoration: "none" }} to="/staffresponse">
-                    <ListGroup.Item className="d-flex ">
-                      <Col md="1">
-                        <AiOutlineAim style={{ color: "#ee9b00" }} />
-                      </Col>
-                      <Col>
-                        <h4>Staff Response</h4>
-                      </Col>
-                    </ListGroup.Item>
-                  </Link>
-                </>
-                <>
-                  <Link style={{ textDecoration: "none" }} to="/appraisals">
-                    <ListGroup.Item className="d-flex ">
-                      <Col md="1">
-                        <AiOutlineAim style={{ color: "#ee9b00" }} />
-                      </Col>
-                      <Col>
-                        <h4>Appraisal Reports</h4>
-                      </Col>
-                    </ListGroup.Item>
-                  </Link>
-                </>
-                <>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to="/appraisals"
+                          >
+                            <ListGroup.Item action>
+                              Appraisal Report
+                            </ListGroup.Item>
+                          </Link>
+                        </Row>
+                      )}
+                    </Col>
+                  </ListGroup.Item>{" "}
+                </Row>
+                <Row>
                   <Link style={{ textDecoration: "none" }} to="/trainings">
                     <ListGroup.Item className="d-flex ">
                       <Col md="1">
                         <AiOutlineAim style={{ color: "#ee9b00" }} />
                       </Col>
-                      <Col>
-                        <h4>Trainings</h4>
-                      </Col>
+                      <Col>Trainings</Col>
                     </ListGroup.Item>
                   </Link>
-                </>
+                </Row>
+                {/* FeedBack */}
+              </Col>
+            </ListGroup.Item>
+            {/* Reviews Appraisal Menu */}
+            <ListGroup.Item className="list-group-item-success">
+              <h6> Reviews {"&"} Feedback</h6>
+
+              <Col>
+                {/*Reviews */}
+                <Row>
+                  {" "}
+                  <ListGroup.Item
+                    action
+                    id="reviews"
+                    onClick={() => setReviews(!reviews)}
+                    className="d-flex "
+                  >
+                    <Col md="1">
+                      <FaGooglePlay style={{ color: "green" }} />
+                    </Col>
+                    <Col>
+                      Reviews ....
+                      {reviews && (
+                        <Row>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to="/quartelyreview"
+                          >
+                            <ListGroup.Item action>
+                              Quartely Review
+                            </ListGroup.Item>
+                          </Link>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to="/midyearreview"
+                          >
+                            <ListGroup.Item action>
+                              Mid-Year-Review
+                            </ListGroup.Item>
+                          </Link>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to="/annualreview"
+                          >
+                            <ListGroup.Item action>
+                              Annual Review
+                            </ListGroup.Item>
+                          </Link>
+                        </Row>
+                      )}
+                    </Col>
+                  </ListGroup.Item>{" "}
+                </Row>
+                {/* FeedBack */}
+                <Row>
+                  {" "}
+                  <ListGroup.Item
+                    action
+                    id="feedback"
+                    onClick={() => setFeedback(!feedback)}
+                    className="d-flex "
+                  >
+                    <Col md="1">
+                      <FaGooglePlay style={{ color: "green" }} />
+                    </Col>
+                    <Col>
+                      Feedback ....
+                      {feedback && (
+                        <Row>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to="/dashboard"
+                          >
+                            <ListGroup.Item action>
+                              Supervisor Feedback Report
+                            </ListGroup.Item>
+                          </Link>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to="/dashboard"
+                          >
+                            <ListGroup.Item action>
+                              HR Feedback Report
+                            </ListGroup.Item>
+                          </Link>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to="/dashboard"
+                          >
+                            <ListGroup.Item action>
+                              County Service Board{" "}
+                            </ListGroup.Item>
+                          </Link>
+                        </Row>
+                      )}
+                    </Col>
+                  </ListGroup.Item>{" "}
+                </Row>
               </Col>
             </ListGroup.Item>
           </ListGroup>
         </Col>
-      </>
-    </Row>
+      </Row>
+    </div>
   );
 };
 

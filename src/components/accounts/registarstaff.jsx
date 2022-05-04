@@ -1,12 +1,10 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/auth";
 import { useQuery, useMutation } from "@apollo/client";
-import { ADD_STAFF } from "../../graphql/mutations";
-import {
-  LOAD_DEPARTMENTS,
-  LOAD_JOBGROUPS,
-  LOAD_ROLES,
-} from "../../graphql/queries";
+import { ADD_STAFF } from "../../graphql/users";
+import { LOAD_ROLES } from "../../graphql/roles";
+import { LOAD_JOBGROUPS } from "../../graphql/jobgroups";
+import { LOAD_DEPARTMENTS } from "../../graphql/departments";
 import {
   Row,
   Col,
@@ -16,7 +14,7 @@ import {
   InputGroup,
 } from "react-bootstrap";
 
-import LeftMenusGeneral from "../leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import { useForm } from "../../utils/hooks";
 
 const Register = (props) => {

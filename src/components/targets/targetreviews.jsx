@@ -4,14 +4,14 @@ import { useMutation } from "@apollo/client";
 import { AuthContext } from "../../context/auth";
 import { useQuery } from "@apollo/client";
 import { Col, Row, Button, Modal, Form } from "react-bootstrap";
-import LeftMenusGeneral from "../leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import TargetsTable from "./targetTable";
 import Pagination from "../../common/pagination";
 import { paginate } from "../../utils/paginate";
 import "semantic-ui-css/semantic.min.css";
-import { LOAD_TARGETS, ADD_TARGET } from "../../graphql/targets";
+import { LOAD_TARGETS, ADD_TARGET, useTargets } from "../../graphql/targets";
 import { useForm } from "../../utils/hooks";
-import { useTargets, useTasks } from "../../graphql/usequeries";
+import { useTasks } from "../../graphql/tasks";
 import AddTargetReview from "./addtargetreview";
 
 const TargetReview = () => {

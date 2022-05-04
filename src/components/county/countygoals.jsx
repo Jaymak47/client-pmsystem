@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/auth";
 import { useQuery } from "@apollo/react-hooks";
-import {
-  LOAD_PROJECTS,
-  LOAD_ACTIVITIES,
-  LOAD_TRAININGS,
-} from "../../graphql/queries";
-import LeftMenusGeneral from "../../components/leftmenusgeneral";
+import { LOAD_PROJECTS } from "../../graphql/projects";
+import { LOAD_ACTIVITIES } from "../../graphql/activities";
+import { LOAD_TRAININGS } from "../../graphql/trainings";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import { Row, Col, Button } from "react-bootstrap";
 import DashBoardRsideMenu from "../../components/dashboard/dashboardrsidemenu";
 import CountyGoalsBody from "./dashboard/countygoalsbody";
@@ -50,7 +48,7 @@ const CountyGoals = () => {
 
   useEffect(() => {
     if (trainingsdata) {
-      setActivities(trainingsdata.getTrainings);
+      setTrainings(trainingsdata.getTrainings);
     }
   }, [trainingsdata]);
 

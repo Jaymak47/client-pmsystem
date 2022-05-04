@@ -14,3 +14,11 @@ export const LOAD_APPRAISAL_REVIEW_MEETING = gql`
     }
   }
 `;
+
+export const DELETE_APPRAISAL_REVIEW_MEETING = gql`
+  mutation deleteAppraisalReviewMeeting($appraisalreviewmeetingId: ID!) {
+    deleteAppraisalReviewMeeting(
+      appraisalreviewmeetingId: $appraisalreviewmeetingId
+    )
+  }
+`;

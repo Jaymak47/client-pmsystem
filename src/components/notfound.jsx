@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Row, Col } from "react-bootstrap";
 
-import LeftMenusGeneral from "../components/leftmenusgeneral";
+import LeftMenusGeneral from "../menus/leftmenusgeneral";
 import { AuthContext } from "../context/auth";
 
 const NotFound = () => {

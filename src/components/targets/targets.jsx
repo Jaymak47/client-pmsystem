@@ -4,14 +4,15 @@ import { useMutation } from "@apollo/client";
 import { AuthContext } from "../../context/auth";
 import { useQuery } from "@apollo/client";
 import { Col, Row, Button, Modal, Form } from "react-bootstrap";
-import LeftMenusGeneral from "../leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import TargetsTable from "./targetTable";
 import Pagination from "../../common/pagination";
 import { paginate } from "../../utils/paginate";
 import "semantic-ui-css/semantic.min.css";
 import { LOAD_TARGETS, ADD_TARGET } from "../../graphql/targets";
 import { useForm } from "../../utils/hooks";
-import { useTargets, useTasks } from "../../graphql/usequeries";
+import { useTargets } from "../../graphql/targets";
+import { useTasks } from "../../graphql/tasks";
 import AddTarget from "./addtarget";
 
 const Targets = () => {
@@ -58,25 +59,18 @@ const Targets = () => {
 
   const [createTarget, { error }] = useMutation(ADD_TARGET, {
     variables: values,
+    refetchQueries: [
+      {
+        query: LOAD_TARGETS,
+        variables: { userId },
+      },
+    ],
 
-    update(proxy, result) {
+    update() {
       setAddRecord(
         `A new Target: ${values.targetname} successfully added to the System `
       );
-      const data = proxy.readQuery({
-        query: LOAD_TARGETS,
-        variables: { userId },
-      });
 
-      data.getUser.targets = [
-        result.data.createTarget,
-        ...data.getUser.targets,
-      ];
-      proxy.writeQuery({
-        query: LOAD_TARGETS,
-        variables: { userId },
-        data,
-      });
       values.targetno = "";
       values.targetname = "";
       values.task = "";
@@ -195,6 +189,7 @@ const Targets = () => {
                 input="input"
                 loading={loading}
                 name="Targets"
+                userId={userId}
               />
             </Row>
             <Row className="m-3">

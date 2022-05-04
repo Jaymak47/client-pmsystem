@@ -1,22 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
-import { LOAD_USERS, useUsers } from "../../graphql/queries";
+import { useUsers } from "../../graphql/users";
 import { AuthContext } from "../../context/auth";
-import { useQuery } from "@apollo/client";
 import { Row, Col } from "react-bootstrap";
 import _ from "lodash";
 import { paginate } from "../../utils/paginate";
-import LeftMenusGeneral from "../leftmenusgeneral";
+import LeftMenusGeneral from "../../menus/leftmenusgeneral";
 import UsersTable from "./userstable";
 import Pagination from "../../common/pagination";
 
 export default function Employees() {
   const user = useContext(AuthContext);
 
-  const {
-    error,
-    loading: loadingUsers,
-    data: usersdata,
-  } = useUsers(user.user.department);
+  const { error, loading: loadingUsers, data: usersdata } = useUsers();
 
   const [users, setUsers] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
