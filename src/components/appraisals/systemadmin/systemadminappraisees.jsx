@@ -7,7 +7,7 @@ import { paginate } from "../../../utils/paginate";
 import LeftMenusGeneral from "../../../menus/leftmenusgeneral";
 import Pagination from "../../../common/pagination";
 import { useDepartment } from "../../../graphql/departments";
-import SupervisorappraiseeTable from "./systemadminuserstable";
+import SystemAdminUserTable from "./systemadminuserstable";
 
 export default function SystemadminAppraisees() {
   const user = useContext(AuthContext);
@@ -52,25 +52,20 @@ export default function SystemadminAppraisees() {
         totalCount: filtered.length,
         pUsers: paginatedUsers,
       };
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
   const { totalCount, pUsers } = getPagedData();
 
   const handleSort = (sortColumn) => {
     try {
       setsortColumn(sortColumn);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   //Handle Paginate
   const handlePageChange = (page) => {
     setpageSize(100);
     setcurrentPage(page);
-    console.log(page);
   };
 
   return (
@@ -155,7 +150,7 @@ export default function SystemadminAppraisees() {
                   onPageChange={handlePageChange}
                 />
               </Row>
-              <SupervisorappraiseeTable
+              <SystemAdminUserTable
                 users={pUsers}
                 loading={loadingUsers}
                 onSort={handleSort}

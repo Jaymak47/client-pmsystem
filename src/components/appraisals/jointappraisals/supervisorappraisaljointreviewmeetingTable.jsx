@@ -1,11 +1,10 @@
-import React from "react";
-import moment from "moment";
-import Table from "../../common/table";
+import { Link } from "react-router-dom";
+import Table from "../../../common/table";
 import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import EditTarget from "./edittarget";
-import DeleteButton from "./deletebuttontargets";
+import { MdCreditScore } from "react-icons/md";
 
-const TargetTable = ({
+const SupervisorappraisaljointreviewTable = ({
   targets,
   onSort,
   sortColumn,
@@ -13,49 +12,55 @@ const TargetTable = ({
   show,
   handleClose,
   loading,
+  targetId,
+  appraiseTarget,
   handleShow,
-  userId,
 }) => {
   let numbering = 1;
+
   const columns = [
     {
       key: "count",
       label: "#",
       content: () => numbering++,
     },
-    { path: "targetno", label: "Target No" },
-    { path: "targetname", label: "Target" },
+    { path: "task.taskname", label: "Task" },
+    {
+      path: "targetname",
+      label: "Target",
+      content: (target) => (
+        <OverlayTrigger
+          overlay={<Tooltip id={`tooltip-top`}>Appraise Target</Tooltip>}
+        >
+          <span onClick={() => appraiseTarget(target.id)}>
+            {target.targetname}
+          </span>
+        </OverlayTrigger>
+      ),
+    },
     { path: "agreedPerformance", label: "Agreed Perfomance Target" },
     { path: "performanceIndicator", label: "Perfomance Indicator" },
-    {
-      path: "startdate",
-      content: (date) => moment(date.startdate).format("DD-MM-YYYY"),
-      label: "Start Date",
-      date: { type: Date, default: Date },
-    },
-
-    {
-      path: "enddate",
-      content: (date) => moment(date.enddate).format("DD-MM-YYYY"),
-      label: "End Date",
-    },
+    { path: "selfScore", label: "Self Score" },
+    { path: "supervisorScore", label: "Supervisor Score" },
+    { path: "jointScore", label: "Joint Score" },
 
     {
       key: "targets",
-      label: "Actions",
+      label: "Appraise Targets",
       content: (target) => (
         <OverlayTrigger
-          overlay={<Tooltip id={`tooltip-top`}>Delete Target</Tooltip>}
+          overlay={<Tooltip id={`tooltip-top`}>Appraise Target</Tooltip>}
         >
-          <DeleteButton
-            targetId={target.id}
-            targetname={target.targetname}
-            userId={userId}
-          />
+          <Button variant="blue" onClick={() => appraiseTarget(target.id)}>
+            {/* <i className="material-icons">&#xE254;</i> */}
+            Score <MdCreditScore />
+          </Button>
         </OverlayTrigger>
       ),
     },
   ];
+
+  const HandleEdit = (target) => {};
 
   if (loading) {
     return (
@@ -99,4 +104,4 @@ const TargetTable = ({
   );
 };
 
-export default TargetTable;
+export default SupervisorappraisaljointreviewTable;

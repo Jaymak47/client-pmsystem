@@ -1,9 +1,9 @@
 import React from "react";
-import Table from "../../../common/table";
+import Table from "../../../../common/table";
 import { Link } from "react-router-dom";
 import { Modal, Row, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 
-const JointreviewUsersTable = ({
+const JointMeetingAppraiseeTable = ({
   error,
   users,
   onSort,
@@ -35,7 +35,7 @@ const JointreviewUsersTable = ({
         <OverlayTrigger
           overlay={<Tooltip id={`tooltip-top`}>Appraise Employee</Tooltip>}
         >
-          <Link to={`/supervisorjointreviewappraisal/${user.id}`}>
+          <Link to={`/appraisalreviewmeeting/${user.id}`}>
             {user.payrollno}
           </Link>
         </OverlayTrigger>
@@ -122,4 +122,4 @@ const JointreviewUsersTable = ({
   );
 };
 
-export default JointreviewUsersTable;
+export default JointMeetingAppraiseeTable;

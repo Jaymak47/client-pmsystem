@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { AuthContext } from "../context/auth";
-import { STAFF_LOGIN } from "../graphql/users";
+import { STAFF_LOGIN, LOAD_USERS } from "../graphql/users";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import isioloLogo from "../components/images/isiolocountylogo.png";
 
@@ -29,7 +29,6 @@ const Login = () => {
   const [login, { loading }] = useMutation(STAFF_LOGIN, {
     update(_, { data: { login: userdata } }) {
       context.login(userdata);
-      console.log(userdata);
       history.push("/dashboard");
       window.location.reload();
     },

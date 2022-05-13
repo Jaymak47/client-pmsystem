@@ -52,25 +52,7 @@ export const LOAD_USER = gql`
       payrollno
       designation
       department {
-        departmentno
         departmentname
-      }
-      jobgroup {
-        jobgroupname
-      }
-      role {
-        rolesname
-      }
-      task {
-        taskname
-        startdate
-        enddate
-        activity {
-          activityname
-          project {
-            projectname
-          }
-        }
       }
     }
   }

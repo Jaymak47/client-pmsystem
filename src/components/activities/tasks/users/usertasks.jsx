@@ -104,18 +104,18 @@ export default function UserTasks(props) {
   const [createTask, { error: taskError }] = useMutation(ADD_TASK, {
     variables: values,
 
+    refetchQueries: [
+      {
+        query: LOAD_TASKS,
+        variables: { userId },
+      },
+    ],
+
     update(proxy, result) {
       setAddRecord(
         `A new Task: ${values.taskname} successfully added to the System `
       );
-      const data = proxy.readQuery({
-        query: LOAD_TASKS,
-        variables: { userId },
-      });
 
-      data.getUser.tasks = [result.data.createTask, ...data.getUser.tasks];
-
-      proxy.writeQuery({ query: LOAD_TASKS, variables: { userId }, data });
       values.taskno = "";
       values.taskname = "";
       values.activity = "";
@@ -192,6 +192,7 @@ export default function UserTasks(props) {
                 input="Tasks"
                 loading={loadingTasks}
                 name="Tasks"
+                userId={userId}
               />
               <>
                 <Col className="md-2">

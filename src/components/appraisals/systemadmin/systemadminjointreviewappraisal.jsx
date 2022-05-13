@@ -3,19 +3,10 @@ import _ from "lodash";
 import { useMutation } from "@apollo/client";
 import { FaHandPointLeft } from "react-icons/fa";
 import { AuthContext } from "../../../context/auth";
-import { useQuery } from "@apollo/client";
+import { useHistory } from "react-router";
 
-import {
-  Col,
-  Row,
-  Button,
-  Modal,
-  Form,
-  FormControl,
-  InputGroup,
-} from "react-bootstrap";
+import { Col, Row, Button, Form, InputGroup } from "react-bootstrap";
 import LeftMenusGeneral from "../../../menus/leftmenusgeneral";
-import SelfappraisalTable from "./selfAppraisalTable";
 import Pagination from "../../../common/pagination";
 import { paginate } from "../../../utils/paginate";
 import "semantic-ui-css/semantic.min.css";
@@ -23,35 +14,53 @@ import {
   LOAD_TARGETS,
   useAppraisal,
   useTarget,
-  UPDATE_SELFSCORE,
-  LOAD_APPRAISALS,
+  UPDATE_TARGET,
+  UPDATE_JOINTSCORE,
 } from "../../../graphql/targets";
+import { useUser } from "../../../graphql/users";
 import { useForm } from "../../../utils/hooks";
-import { useTasks } from "../../../graphql/tasks";
 
-const SelfAppraisal = () => {
+import SystemAdminJointReviewTable from "./systemadminjointreviewappraisaltable";
+
+const SystemAdminJointReview = (props) => {
   const user = useContext(AuthContext);
-
+  const history = useHistory();
+  const userId = props.match.params.userId;
   const [targets, setTargets] = useState([]);
+
   const [Addrecord, setAddRecord] = useState("");
   const [targetId, setTargetId] = useState("");
   const [target, setTarget] = useState({});
+  const [selectedUser, setSelectedUser] = useState({});
   const [score, setScore] = useState("");
   const [input, setInput] = useState({
-    pIndicator: "",
-    aResult: "",
+    jointScoreCalc: "",
   });
 
-  const { id: userId } = user.user;
+  const {
+    data: userdata,
+    loading: loadingUserdata,
+    error: userdataError,
+  } = useUser(userId);
 
-  const { data: targetsdata, loading } = useAppraisal(userId);
-
+  const {
+    data: targetsdata,
+    loading,
+    error: targetsError,
+  } = useAppraisal(userId);
   //Load Data from the Server
   useEffect(() => {
     if (targetsdata) {
       setTargets(targetsdata.getUser.targets);
     }
   }, [targetsdata]);
+
+  //Load Data from the Server
+  useEffect(() => {
+    if (userdata) {
+      setSelectedUser(userdata.getUser);
+    }
+  }, [userdata]);
 
   //Initialize Sort Columns
   const [sortColumn, setsortColumn] = useState({
@@ -107,39 +116,33 @@ const SelfAppraisal = () => {
   const { onChange, onSubmit, values, validated } = useForm(
     updateTargetCallback,
     {
-      selfScore: "",
-      achievedResult: "",
-      targetname: "",
+      jointScore: "",
     }
   );
 
-  const { selfScore, achievedResult, targetname, jointScore, supervisorScore } =
-    values;
+  const { jointScore } = values;
 
-  const [updateTarget, { error }] = useMutation(UPDATE_SELFSCORE, {
+  const [updateTarget, { error }] = useMutation(UPDATE_JOINTSCORE, {
     variables: {
       targetId,
-      selfScore,
-      achievedResult,
+      jointScore,
+    },
+
+    update(proxy, result) {
+      setAddRecord(
+        `Supervisor Score: ${target.targetname} Updated successfully added on the System `
+      );
+      values.jointScore = "";
     },
     refetchQueries: [
       {
-        query: LOAD_APPRAISALS,
+        query: LOAD_TARGETS,
         variables: { userId },
       },
     ],
-    update(proxy, result) {
-      setAddRecord(
-        `Selfscore: ${target.targetname} Updated successfully added on the System `
-      );
-
-      values.selfScore = "";
-      values.achievedResult = "";
-    },
-
     onError(err) {
       if (err) {
-        // console.log(err.networkError.result.errors);
+        //console.log(err.networkError.result.errors);
         return error;
       }
     },
@@ -149,13 +152,33 @@ const SelfAppraisal = () => {
     updateTarget();
   }
 
+  const handleBack = () => {
+    history.push("/systemadminappraisees");
+  };
+
+  const { firstname, surname, department, jobgroup, payrollno } = selectedUser;
+  const departmentname = department ? department.departmentname : null;
+  const jobgroupname = jobgroup ? jobgroup.jobgroupname : null;
+
   const scoreValue = useMemo(() => {
     return new Array(aTargets.length).fill(1);
   }, [aTargets]);
 
-  const totalScore = useMemo(() => {
+  const totalSelfScore = useMemo(() => {
     return aTargets.reduce((sum, target, index) => {
       return sum + parseFloat(target.selfScore) * scoreValue[index];
+    }, 0);
+  }, [scoreValue, aTargets]);
+
+  const totalSupervisorScore = useMemo(() => {
+    return aTargets.reduce((sum, target, index) => {
+      return sum + parseFloat(target.supervisorScore) * scoreValue[index];
+    }, 0);
+  }, [scoreValue, aTargets]);
+
+  const totalJointReviewScore = useMemo(() => {
+    return aTargets.reduce((sum, target, index) => {
+      return sum + parseFloat(target.jointScore) * scoreValue[index];
     }, 0);
   }, [scoreValue, aTargets]);
 
@@ -183,7 +206,7 @@ const SelfAppraisal = () => {
     const computeScore = (parseInt(aResult) / parseInt(pIndicator)) * 100;
     console.log(computeScore);
     setScore(computeScore);
-    setInput({ pIndicator: "", aResult: "" });
+    setInput({ jointScoreCal: "" });
   };
 
   return (
@@ -198,10 +221,10 @@ const SelfAppraisal = () => {
           <Col md="9">
             <div className="sectiondescription">
               <Row className="m-3">
-                <h2>Self Appraisal</h2>
+                <h2>System Admin Appraisal</h2>
                 <Row>
                   <Col md="2">
-                    <h3>#</h3>
+                    s<h3>#</h3>
                   </Col>
                   <Col>
                     <h3 style={{ textAlign: "left" }}> Notes</h3>{" "}
@@ -248,8 +271,17 @@ const SelfAppraisal = () => {
                 </Row>
               </Row>
             </div>
+            <Row className="m-3"></Row>
 
-            <Row>
+            <Row className="m-3">
+              <Row className="tablestlyles4">
+                <h3>
+                  {firstname} {surname}
+                  {"|"} Department {":"}
+                  {departmentname} {"|"} {jobgroupname}
+                  {"|"}PayrollNo {":"} {payrollno}
+                </h3>
+              </Row>
               <h4>
                 {totalCount === 0
                   ? "No Task in the Database"
@@ -257,9 +289,8 @@ const SelfAppraisal = () => {
               </h4>
 
               <Col md="9">
-                <SelfappraisalTable
+                <SystemAdminJointReviewTable
                   targets={aTargets}
-                  totalScore={totalScore}
                   onSort={handleSort}
                   sortColumn={sortColumn}
                   count={targets.length}
@@ -268,88 +299,77 @@ const SelfAppraisal = () => {
                   name="Targets"
                   targetId={targetId}
                   appraiseTarget={appraiseTarget}
+                  totalSelfScore={totalSelfScore}
+                  totalSupervisorScore={totalSupervisorScore}
+                  totalJointReviewScore={totalJointReviewScore}
                 />
+                <>
+                  <Col className="md-2">
+                    <Button variant="warning" onClick={handleBack}>
+                      Back
+                    </Button>
+                  </Col>
+                </>
               </Col>
 
               <Col md="3" className="mt-5">
-                <>
-                  <h3 className="tablestlyles4">
-                    <FaHandPointLeft />
-                    {""}
-                    Select a Target on the table to Appraise
-                  </h3>
-                  <Form validated={validated} onSubmit={onSubmit}>
-                    <div className="adddataform m-2">
-                      <h3>{target.targetname}</h3>
-                    </div>
-                    <Row>
-                      <Form.Group as={Col} md="12">
-                        <InputGroup>
-                          <InputGroup.Text> Achieved Result</InputGroup.Text>
-                          <Form.Control
-                            required
-                            title="Score"
-                            type="text"
-                            placeholder="Achieved Result"
-                            name="achievedResult"
-                            value={achievedResult}
-                            onChange={onChange}
-                          />
-                        </InputGroup>
-                      </Form.Group>
-                    </Row>
-                    <Row className="mt-3">
-                      <Form.Group as={Col} md="12">
-                        <InputGroup>
-                          <InputGroup.Text> Score (Per %)</InputGroup.Text>
-                          <Form.Control
-                            required
-                            title="Score"
-                            type="text"
-                            placeholder="0"
-                            name="selfScore"
-                            value={selfScore}
-                            onChange={onChange}
-                          />
-                        </InputGroup>
-                      </Form.Group>
-                    </Row>
-                    <Col className="mt-2">
-                      <Button
-                        variant="success"
-                        disabled={!values}
-                        type="submit"
-                      >
-                        score
-                      </Button>
-                    </Col>
-                    <Row className="m-3">
-                      {error && (
-                        <div
-                          className="ui error message"
-                          style={{ marginBottom: 20 }}
-                        >
-                          <ul
-                            className="list "
-                            style={{
-                              "text-align": "center",
-                            }}
-                          >
-                            <li>
-                              {error.networkError
-                                ? "Network Error: - Error connecting to PFMS Database Server: Contact System Administrator"
-                                : error.graphQLErrors[0].message}
-                            </li>
-                          </ul>
-                        </div>
-                      )}
+                <h3 className="tablestlyles4">
+                  <FaHandPointLeft />
+                  {""}
+                  Select a Target on the table to Appraise
+                </h3>
+                <Form noValidate validated={validated} onSubmit={onSubmit}>
+                  <div className="adddataform m-2">
+                    <h3>{target.targetname}</h3>
+                  </div>
 
-                      <div className={Addrecord ? "ui success message" : null}>
-                        {Addrecord ? Addrecord : null}
+                  <Row className="mt-3">
+                    <Form.Group as={Col} md="12">
+                      <InputGroup>
+                        <InputGroup.Text> Score (Per %)</InputGroup.Text>
+                        <Form.Control
+                          required
+                          title="Score"
+                          type="text"
+                          placeholder="0"
+                          name="jointScore"
+                          value={jointScore}
+                          onChange={onChange}
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                  </Row>
+                  <Col className="mt-2">
+                    <Button variant="success" type="submit">
+                      score
+                    </Button>
+                  </Col>
+                  <Row className="m-3">
+                    {error && (
+                      <div
+                        className="ui error message"
+                        style={{ marginBottom: 20 }}
+                      >
+                        <ul
+                          className="list "
+                          style={{
+                            "text-align": "center",
+                          }}
+                        >
+                          <li>
+                            {error.networkError
+                              ? "Network Error: - Error connecting to PFMS Database Server: Contact System Administrator"
+                              : error.graphQLErrors[0].message}
+                          </li>
+                        </ul>
                       </div>
-                    </Row>
-                  </Form>
-                </>
+                    )}
+
+                    <div className={Addrecord ? "ui success message" : null}>
+                      {Addrecord ? Addrecord : null}
+                    </div>
+                  </Row>
+                </Form>
                 <>
                   <h3 className="tablestlyles">Score Calculator</h3>
                   <Form validated={validated} onSubmit={handleSubmit}>
@@ -407,6 +427,7 @@ const SelfAppraisal = () => {
                 </>
               </Col>
             </Row>
+
             <Row className="m-3">
               <Pagination
                 itemsCount={totalCount}
@@ -422,4 +443,4 @@ const SelfAppraisal = () => {
   );
 };
 
-export default SelfAppraisal;
+export default SystemAdminJointReview;

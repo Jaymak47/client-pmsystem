@@ -9,6 +9,10 @@ const LeftMenusGeneral = () => {
   const [role, setRole] = useState("");
 
   const roleType = user.user.role;
+  const handleRole = (role) => {
+    setRole(role);
+  };
+  // setRole(user.user.role);
 
   const LeftmenuBar = role !== roleType ? chooseRole(roleType) : null;
 

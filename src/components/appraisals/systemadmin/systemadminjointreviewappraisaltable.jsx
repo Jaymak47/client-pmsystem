@@ -13,10 +13,11 @@ import { MdCreditScore } from "react-icons/md";
 import RatingScale from "../ratingscale";
 import TotalMeanScore from "../totalmeanscore";
 
-const SupervisorAppraisalTable = ({
+const SystemAdminJointReviewTable = ({
   targets,
   totalSelfScore,
   totalSupervisorScore,
+  totalJointReviewScore,
   onSort,
   sortColumn,
   count,
@@ -58,6 +59,7 @@ const SupervisorAppraisalTable = ({
     { path: "achievedResult", label: "Achieved Results" },
     { path: "selfScore", label: "Self Score" },
     { path: "supervisorScore", label: "Supervisor Score" },
+    { path: "jointScore", label: "Joint Score" },
     {
       key: "targets",
       label: "Appraise Targets",
@@ -96,12 +98,16 @@ const SupervisorAppraisalTable = ({
 
   let meanscore = 0;
   let supervisormeanscore = 0;
+  let jointmeanscore = 0;
 
   // const TotalMeanScore =
   totalSelfScore > 0 ? (meanscore = totalSelfScore / count) : (meanscore = 0);
   totalSupervisorScore > 0
     ? (supervisormeanscore = totalSupervisorScore / count)
     : (supervisormeanscore = 0);
+  totalJointReviewScore > 0
+    ? (jointmeanscore = totalJointReviewScore / count)
+    : (jointmeanscore = 0);
 
   return (
     <div>
@@ -135,6 +141,11 @@ const SupervisorAppraisalTable = ({
             totalScore={totalSupervisorScore}
             meanscore={supervisormeanscore}
           />
+          <h3 className="tablestlyles4">Joint Score</h3>
+          <TotalMeanScore
+            totalScore={totalJointReviewScore}
+            meanscore={jointmeanscore}
+          />
         </Col>
         <Col md="7">
           <RatingScale />
@@ -144,4 +155,4 @@ const SupervisorAppraisalTable = ({
   );
 };
 
-export default SupervisorAppraisalTable;
+export default SystemAdminJointReviewTable;

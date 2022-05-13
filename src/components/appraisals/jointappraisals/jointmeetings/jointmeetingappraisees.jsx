@@ -1,19 +1,23 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useUsers } from "../../../graphql/users";
-import { AuthContext } from "../../../context/auth";
+import { useUsers } from "../../../../graphql/users";
+import { AuthContext } from "../../../../context/auth";
 import { useQuery } from "@apollo/client";
 import { Row, Col } from "react-bootstrap";
 import _ from "lodash";
-import { paginate } from "../../../utils/paginate";
-import LeftMenusGeneral from "../../../menus/leftmenusgeneral";
-import Pagination from "../../../common/pagination";
-import { useDepartment } from "../../../graphql/departments";
-import JointreviewUsersTable from "./jointreviewuserstable";
+import { paginate } from "../../../../utils/paginate";
+import LeftMenusGeneral from "../../../../menus/leftmenusgeneral";
+import Pagination from "../../../../common/pagination";
+import { useDepartment } from "../../../../graphql/departments";
+import JoinMeetingAppraiseesTable from "./jointmeetingappraiseestable";
 
-export default function SystemAdminJointAppraisee() {
+export default function JointMeetingAppraisees() {
   const user = useContext(AuthContext);
 
-  const { error, loading: loadingUsers, data: usersdata } = useUsers();
+  const {
+    error,
+    loading: loadingUsers,
+    data: usersdata,
+  } = useUsers(user.user.department);
 
   const departmentId = user.user.department;
 
@@ -87,7 +91,7 @@ export default function SystemAdminJointAppraisee() {
             <Row className="m-3">
               <div className="sectiondescription">
                 <Row className="m-3">
-                  <h2>System Admin Joint Reviews Appraisal</h2>
+                  <h2>Joint Review Meetings</h2>
                   <Row>
                     <Col md="2">
                       <h3>#</h3>
@@ -158,7 +162,7 @@ export default function SystemAdminJointAppraisee() {
                   onPageChange={handlePageChange}
                 />
               </Row>
-              <JointreviewUsersTable
+              <JoinMeetingAppraiseesTable
                 users={pUsers}
                 loading={loadingUsers}
                 onSort={handleSort}

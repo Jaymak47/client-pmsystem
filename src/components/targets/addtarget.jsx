@@ -139,7 +139,7 @@ const AddTarget = ({
               </InputGroup>
             </Form.Group>
           </Row>
-          <Button type="submit" variant="success">
+          <Button type="submit" variant="success" disabled={!values}>
             Save
           </Button>
           <Row className="m-3">

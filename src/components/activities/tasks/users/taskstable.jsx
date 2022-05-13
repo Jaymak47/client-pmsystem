@@ -2,11 +2,13 @@ import React from "react";
 import moment from "moment";
 import Table from "../../../../common/table";
 import { Modal, Row, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import DeleteButton from "../deletebuttontasks";
 //import EditAddActivityTask from "./editactivitytask";
 
 const TaskTable = ({
   error,
   tasks,
+  userId,
   onSort,
   sortColumn,
   count,
@@ -42,15 +44,15 @@ const TaskTable = ({
     {
       key: "tasks",
       label: "Actions",
-      content: () => (
-        <OverlayTrigger overlay={<Tooltip id={`tooltip-top`}>Edit</Tooltip>}>
-          <button
-            onClick={handleShow}
-            className="btn text-warning btn-act"
-            data-toggle="modal"
-          >
-            <i className="material-icons">&#xE254;</i>
-          </button>
+      content: (task) => (
+        <OverlayTrigger
+          overlay={<Tooltip id={`tooltip-top`}>Delete Task</Tooltip>}
+        >
+          <DeleteButton
+            taskId={task.id}
+            taskname={task.taskname}
+            userId={userId}
+          />
         </OverlayTrigger>
       ),
     },

@@ -132,7 +132,7 @@ function MainDashBoard() {
             <LeftMenusGeneral user={user} />
           </Col>
           <Col md="9">
-            <Row>
+            <Row className="mt-3">
               <Col>
                 <div className="sectiondescription">
                   <Row className="m-3">

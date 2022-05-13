@@ -154,7 +154,7 @@ const TargetReview = () => {
           <Col md="9">
             <div className="sectiondescription">
               <Row className="m-3">
-                <h2>Mid-Year Review : Targets Reviewed</h2>
+                <h2>Mid-Year Review : Targets Reviews</h2>
               </Row>
             </div>
 

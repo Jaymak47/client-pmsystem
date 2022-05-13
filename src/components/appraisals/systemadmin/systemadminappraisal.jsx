@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
 import _ from "lodash";
 import { useMutation } from "@apollo/client";
 import { FaHandPointLeft } from "react-icons/fa";
@@ -12,32 +12,42 @@ import { paginate } from "../../../utils/paginate";
 import "semantic-ui-css/semantic.min.css";
 import {
   LOAD_TARGETS,
-  useTargets,
+  useAppraisal,
   useTarget,
   UPDATE_TARGET,
+  UPDATE_SUPERVISORSCORE,
 } from "../../../graphql/targets";
 import { useUser } from "../../../graphql/users";
 import { useForm } from "../../../utils/hooks";
 
-import SystemAdminAppraisalTable from "./systemadminuserstable";
+import SystemAdminAppraisalTable from "./systemadminappraisaltable";
 
 const SystemAdminAppraisal = (props) => {
   const user = useContext(AuthContext);
   const history = useHistory();
-  const userId = props.match.params.id;
+  const userId = props.match.params.userId;
   const [targets, setTargets] = useState([]);
 
   const [Addrecord, setAddRecord] = useState("");
   const [targetId, setTargetId] = useState("");
   const [target, setTarget] = useState({});
   const [selectedUser, setSelectedUser] = useState({});
+  const [score, setScore] = useState("");
+  const [input, setInput] = useState({
+    supervisorScoreCalc: "",
+  });
+
   const {
     data: userdata,
     loading: loadingUserdata,
     error: userdataError,
   } = useUser(userId);
 
-  const { data: targetsdata, loading } = useTargets(userId);
+  const {
+    data: targetsdata,
+    loading,
+    error: targetsError,
+  } = useAppraisal(userId);
   //Load Data from the Server
   useEffect(() => {
     if (targetsdata) {
@@ -51,8 +61,6 @@ const SystemAdminAppraisal = (props) => {
       setSelectedUser(userdata.getUser);
     }
   }, [userdata]);
-
-  console.log(selectedUser);
 
   //Initialize Sort Columns
   const [sortColumn, setsortColumn] = useState({
@@ -108,36 +116,31 @@ const SystemAdminAppraisal = (props) => {
   const { onChange, onSubmit, values, validated } = useForm(
     updateTargetCallback,
     {
-      selfScore: "",
-      achievedResult: "",
-      targetname: "",
+      supervisorScore: "",
+      jointScore: "",
     }
   );
 
-  const { selfScore, achievedResult, targetname } = values;
+  const { supervisorScore, jointScore } = values;
 
-  const [updateTarget, { error }] = useMutation(UPDATE_TARGET, {
+  const [updateTarget, { error }] = useMutation(UPDATE_SUPERVISORSCORE, {
     variables: {
       targetId,
-      selfScore,
-      achievedResult,
+      supervisorScore,
     },
 
     update(proxy, result) {
       setAddRecord(
-        `Selfscore: ${target.targetname} Edited successfully added to the System `
+        `Supervisor Score: ${target.targetname} Updated successfully added on the System `
       );
-      const data = proxy.readQuery({
-        query: LOAD_TARGETS,
-      });
-      data.getUser.targets = [
-        result.data.updateTarget,
-        ...data.getUser.targets,
-      ];
-      proxy.writeQuery({ query: LOAD_TARGETS, data });
-      values.selfScore = "";
-      values.achievedResult = "";
+      values.supervisorScore = "";
     },
+    refetchQueries: [
+      {
+        query: LOAD_TARGETS,
+        variables: { userId },
+      },
+    ],
     onError(err) {
       if (err) {
         //console.log(err.networkError.result.errors);
@@ -151,12 +154,55 @@ const SystemAdminAppraisal = (props) => {
   }
 
   const handleBack = () => {
-    history.push("/systmadminrappraisees");
+    history.push("/systemadminappraisees");
   };
 
   const { firstname, surname, department, jobgroup, payrollno } = selectedUser;
   const departmentname = department ? department.departmentname : null;
   const jobgroupname = jobgroup ? jobgroup.jobgroupname : null;
+
+  const scoreValue = useMemo(() => {
+    return new Array(aTargets.length).fill(1);
+  }, [aTargets]);
+
+  const totalSelfScore = useMemo(() => {
+    return aTargets.reduce((sum, target, index) => {
+      return sum + parseFloat(target.selfScore) * scoreValue[index];
+    }, 0);
+  }, [scoreValue, aTargets]);
+
+  const totalSupervisorScore = useMemo(() => {
+    return aTargets.reduce((sum, target, index) => {
+      return sum + parseFloat(target.supervisorScore) * scoreValue[index];
+    }, 0);
+  }, [scoreValue, aTargets]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setInput((prevInput) => {
+      return {
+        ...prevInput,
+        [name]: value,
+      };
+    });
+  }
+
+  const { pIndicator, aResult } = input;
+
+  const handleSubmit = (event) => {
+    let form = event.currentTarget;
+    event.preventDefault();
+    console.log(input);
+
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    }
+
+    const computeScore = (parseInt(aResult) / parseInt(pIndicator)) * 100;
+    console.log(computeScore);
+    setScore(computeScore);
+    setInput({ supervisorScoreCal: "" });
+  };
 
   return (
     <div>
@@ -170,10 +216,10 @@ const SystemAdminAppraisal = (props) => {
           <Col md="9">
             <div className="sectiondescription">
               <Row className="m-3">
-                <h2>Supervisor Appraisal</h2>
+                <h2>System Admin Appraisal</h2>
                 <Row>
                   <Col md="2">
-                    <h3>#</h3>
+                    s<h3>#</h3>
                   </Col>
                   <Col>
                     <h3 style={{ textAlign: "left" }}> Notes</h3>{" "}
@@ -222,13 +268,16 @@ const SystemAdminAppraisal = (props) => {
             </div>
             <Row className="m-3"></Row>
 
-            <Row>
-              <h3>
-                {firstname} {surname}
-                {"|"} Department {":"}
-                {departmentname} {"|"} {jobgroupname}
-                {"|"}PayrollNo {":"} {payrollno}
-              </h3>
+            <Row className="m-3">
+              <Row className=" tablestlyles4">
+                <h3>
+                  {firstname} {surname}
+                  {"|"} Department {":"}
+                  {departmentname} {"|"} {jobgroupname}
+                  {"|"}PayrollNo {":"} {payrollno}
+                </h3>
+              </Row>
+
               <h4>
                 {totalCount === 0
                   ? "No Task in the Database"
@@ -246,6 +295,8 @@ const SystemAdminAppraisal = (props) => {
                   name="Targets"
                   targetId={targetId}
                   appraiseTarget={appraiseTarget}
+                  totalSelfScore={totalSelfScore}
+                  totalSupervisorScore={totalSupervisorScore}
                 />
                 <>
                   <Col className="md-2">
@@ -257,7 +308,7 @@ const SystemAdminAppraisal = (props) => {
               </Col>
 
               <Col md="3" className="mt-5">
-                <h3>
+                <h3 className="tablestlyles4">
                   <FaHandPointLeft />
                   {""}
                   Select a Target on the table to Appraise
@@ -276,8 +327,8 @@ const SystemAdminAppraisal = (props) => {
                           title="Score"
                           type="text"
                           placeholder="0"
-                          name="selfScore"
-                          value={selfScore}
+                          name="supervisorScore"
+                          value={supervisorScore}
                           onChange={onChange}
                         />
                       </InputGroup>
@@ -314,6 +365,61 @@ const SystemAdminAppraisal = (props) => {
                     </div>
                   </Row>
                 </Form>
+                <>
+                  <h3 className="tablestlyles">Score Calculator</h3>
+                  <Form validated={validated} onSubmit={handleSubmit}>
+                    <Row>
+                      <Form.Group as={Col} md="12">
+                        <InputGroup>
+                          <InputGroup.Text>
+                            {" "}
+                            Performance Indicator
+                          </InputGroup.Text>
+                          <Form.Control
+                            type="text"
+                            placeholder="0"
+                            name="pIndicator"
+                            value={pIndicator}
+                            onChange={handleChange}
+                          />
+                        </InputGroup>
+                      </Form.Group>
+                    </Row>
+                    <Row className="mt-3">
+                      <Form.Group as={Col} md="12">
+                        <InputGroup>
+                          <InputGroup.Text> Achieved Result</InputGroup.Text>
+                          <Form.Control
+                            required
+                            type="text"
+                            placeholder="0"
+                            name="aResult"
+                            value={aResult}
+                            onChange={handleChange}
+                          />
+                        </InputGroup>
+                      </Form.Group>
+                    </Row>
+                    <Col className="mt-2">
+                      <Button
+                        variant="success"
+                        disabled={!values}
+                        type="submit"
+                      >
+                        Calculate
+                      </Button>
+                    </Col>
+                  </Form>
+                  <>
+                    <Col className="tablestlyles2 mt-2">
+                      <h2>
+                        Score:{Math.ceil(score)}
+                        {""}
+                        {"%"}
+                      </h2>
+                    </Col>
+                  </>
+                </>
               </Col>
             </Row>
 

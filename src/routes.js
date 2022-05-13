@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 //App Global Routes
 import Login from "./login/login";
 import Footer from "./components/footer";
+import LoadingPage from "./components/Loading";
 import NotFound from "./components/notfound";
 import AuthRoute from "./utils/AuthRoute";
 import MainHome from "./components/dashboard/main";
@@ -73,14 +74,18 @@ import SupervisorAppraisal from "./components/appraisals/supervisor/supervisorap
 import SupervisorAppraisees from "./components/appraisals/supervisor/supervisorappraisees";
 import CommitteeAppraisal from "./components/appraisals/committee/committeeappraisal";
 import Appraisals from "./components/appraisals/user/appraisals";
-import AppraisalReviewMeeting from "./components/appraisals/jointappraisals/appraisalreviewmeeting";
+import AppraisalReviewMeeting from "./components/appraisals/jointappraisals/jointmeetings/appraisalreviewmeeting";
 import StaffReponse from "./components/appraisals/user/staffresponse";
-import JointReview from "./components/appraisals/jointappraisals/jointreview";
+import JointReview from "./components/appraisals/jointappraisals/jointreviewmeeting";
 import CountyserviceBoard from "./components/appraisals/countyserviceboard/countyserviceboard";
 import SupervisorResponse from "./components/appraisals/supervisor/supervisorresponse";
 import SupervisorjointreviewAppraisee from "./components/appraisals/jointappraisals/supervisorjointreviewappraisee";
 import SystemadminAppraisees from "./components/appraisals/systemadmin/systemadminappraisees";
-import SystemadminjointreviewAppraisee from "./components/appraisals/systemadmin/systemadminappraisees";
+import SystemAdminJointAppraisee from "./components/appraisals/systemadmin/systemadminjointreviewappraisee";
+import SystemAdminAppraisal from "./components/appraisals/systemadmin/systemadminappraisal";
+import SystemAdminJointReview from "./components/appraisals/systemadmin/systemadminjointreviewappraisal";
+import SupervisorJointReview from "./components/appraisals/jointappraisals/supervisoradminjointreviewappraisal";
+import JointMeetingAppraisees from "./components/appraisals/jointappraisals/jointmeetings/jointmeetingappraisees";
 
 //Trainings
 
@@ -232,18 +237,35 @@ function PfmsRoutes() {
           path="/systemadminappraisees"
           component={SystemadminAppraisees}
         />
+
         <AuthRoute
-          path="/systemadminappraisalsjointreviews"
-          component={SystemadminjointreviewAppraisee}
+          path="/systemadminjointappraisees"
+          component={SystemAdminJointAppraisee}
         />
         <AuthRoute path="/jointreview/:userId" component={JointReview} />
         <AuthRoute
-          path="/appraisalreviewmeeting"
+          path="/appraisalreviewmeeting/:userId"
           component={AppraisalReviewMeeting}
+        />
+        <AuthRoute
+          path="/jointmeetingappraisees"
+          component={JointMeetingAppraisees}
         />
         <AuthRoute
           path="/supervisorappraisal/:userId"
           component={SupervisorAppraisal}
+        />
+        <AuthRoute
+          path="/systemadminappraisal/:userId"
+          component={SystemAdminAppraisal}
+        />
+        <AuthRoute
+          path="/supervisorjointreviewappraisal/:userId"
+          component={SupervisorJointReview}
+        />
+        <AuthRoute
+          path="/systemadminjointreviewappraisal/:userId"
+          component={SystemAdminJointReview}
         />
 
         <AuthRoute path="/committeeappraisal" component={CommitteeAppraisal} />
@@ -262,6 +284,7 @@ function PfmsRoutes() {
 
         {/* General Routes */}
         <AuthRoute path="/not-Found" component={NotFound} />
+        <AuthRoute path="/loading" component={LoadingPage} />
         <Redirect to="/not-Found" />
       </Switch>
       <Footer />

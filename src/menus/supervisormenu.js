@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import userPic from "../components/images/userphotos/John.jpg";
 import Help from "../components/images/help.png";
 
-function MenuBar() {
+function SupervisorMenu() {
   const { user, logout, login } = useContext(AuthContext);
   const pathname = window.location.pathname;
   const path = pathname === "/" ? "home" : pathname.substr(1);
@@ -37,7 +37,7 @@ function MenuBar() {
         to="/dashboard"
       />
 
-      <Dropdown item text="County Planning">
+      <Dropdown item text="County">
         <Dropdown.Menu>
           <Dropdown.Item as={Link} to="/sectors">
             All Sectors
@@ -109,62 +109,90 @@ function MenuBar() {
               />
             </Dropdown.Menu>
           </Dropdown>
+        </Dropdown.Menu>
+      </Dropdown>
+      <Dropdown item text="WorkPlan">
+        <Dropdown.Menu>
           <Dropdown.Item as={Link} to="/projects">
             Projects
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/projects">
+          <Dropdown.Item as={Link} to="/contracts">
             Perfomance Contracts
           </Dropdown.Item>
           <Dropdown.Item as={Link} to="/activities">
-            Activities
+            My Activities
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/projects">
-            Reviews
-          </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/targets">
-            Targets
+          <Dropdown.Item as={Link} to="/usertasks">
+            My Tasks
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
 
-      <Dropdown item text="Performance Appraisal">
+      <Dropdown item text="Appraisals">
         <Dropdown.Menu>
-          <Dropdown item text="Staff">
+          <Dropdown item text="County Staff">
             <Dropdown.Menu>
               <Dropdown.Item
                 icon="bug"
-                text="Self Appraisal"
+                text="Appraisees"
                 as={Link}
-                to="/selfappraisal"
+                to="/supervisorappraisees"
               />
               <Dropdown.Item
                 icon="tree"
-                text="Supervisor Appraisal"
+                text="Review Meetings"
                 as={Link}
-                to="/supervisorappraisal"
+                to="/supervisorappraisees"
               />
               <Dropdown.Item
                 icon="ambulance"
-                text="jointappraisal"
+                text="Joint Reviews"
                 as={Link}
-                to="/jointreview"
+                to="/supervisorappraisees"
               />
               <Dropdown.Item
                 icon="building"
-                text="Committee Appraisal"
+                text="Staff Responses"
                 as={Link}
-                to="/committeeappraisal"
+                to="/supervisorappraisees"
               />
               <Dropdown.Item
                 icon="road"
-                text="Appraisal Report"
+                text="Supervisor Responses"
                 as={Link}
-                to="/appraisals"
+                to="/supervisorappraisees"
+              />
+              <Dropdown.Item
+                icon="road"
+                text="Committee Appraisals"
+                as={Link}
+                to="/supervisorappraisees"
+              />
+              <Dropdown.Item
+                icon="road"
+                text="CSB Appraisals"
+                as={Link}
+                to="/supervisorappraisees"
+              />
+              <Dropdown.Item
+                icon="road"
+                text="Appraisal Reports"
+                as={Link}
+                to="/supervisorappraisees"
               />
             </Dropdown.Menu>
           </Dropdown>
+          <Dropdown.Item as={Link} to="/selfappraisal">
+            My Self Appraisal
+          </Dropdown.Item>
+          <Dropdown.Item as={Link} to="/staffresponse">
+            My Staff Response
+          </Dropdown.Item>
           <Dropdown.Item as={Link} to="/trainings">
-            Trainings
+            My Trainings
+          </Dropdown.Item>
+          <Dropdown.Item as={Link} to="/appraisals">
+            My Appraisal Report
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -192,8 +220,7 @@ function MenuBar() {
       </Menu.Menu>
     </Menu>
   ) : null;
-  console.log(user.username);
   return menuBar;
 }
 
-export default MenuBar;
+export default SupervisorMenu;

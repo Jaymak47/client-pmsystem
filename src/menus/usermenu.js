@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import userPic from "../components/images/userphotos/John.jpg";
 import Help from "../components/images/help.png";
 
-function MenuBar() {
+function UserMenu() {
   const { user, logout, login } = useContext(AuthContext);
   const pathname = window.location.pathname;
   const path = pathname === "/" ? "home" : pathname.substr(1);
@@ -37,7 +37,7 @@ function MenuBar() {
         to="/dashboard"
       />
 
-      <Dropdown item text="County Planning">
+      <Dropdown item text="County">
         <Dropdown.Menu>
           <Dropdown.Item as={Link} to="/sectors">
             All Sectors
@@ -109,62 +109,41 @@ function MenuBar() {
               />
             </Dropdown.Menu>
           </Dropdown>
+        </Dropdown.Menu>
+      </Dropdown>
+      <Dropdown item text="WorkPlan">
+        <Dropdown.Menu>
           <Dropdown.Item as={Link} to="/projects">
             Projects
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/projects">
+          <Dropdown.Item as={Link} to="/contracts">
             Perfomance Contracts
           </Dropdown.Item>
           <Dropdown.Item as={Link} to="/activities">
-            Activities
+            My Activities
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/projects">
-            Reviews
-          </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/targets">
-            Targets
+          <Dropdown.Item as={Link} to="/usertasks">
+            My Tasks
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
 
-      <Dropdown item text="Performance Appraisal">
+      <Dropdown item text="Appraisals">
         <Dropdown.Menu>
-          <Dropdown item text="Staff">
-            <Dropdown.Menu>
-              <Dropdown.Item
-                icon="bug"
-                text="Self Appraisal"
-                as={Link}
-                to="/selfappraisal"
-              />
-              <Dropdown.Item
-                icon="tree"
-                text="Supervisor Appraisal"
-                as={Link}
-                to="/supervisorappraisal"
-              />
-              <Dropdown.Item
-                icon="ambulance"
-                text="jointappraisal"
-                as={Link}
-                to="/jointreview"
-              />
-              <Dropdown.Item
-                icon="building"
-                text="Committee Appraisal"
-                as={Link}
-                to="/committeeappraisal"
-              />
-              <Dropdown.Item
-                icon="road"
-                text="Appraisal Report"
-                as={Link}
-                to="/appraisals"
-              />
-            </Dropdown.Menu>
-          </Dropdown>
+          <Dropdown.Item as={Link} to="/targets">
+            Targets
+          </Dropdown.Item>
+          <Dropdown.Item as={Link} to="/selfappraisal">
+            Self Appraisal
+          </Dropdown.Item>
+          <Dropdown.Item as={Link} to="/staffresponse">
+            Staff Response
+          </Dropdown.Item>
           <Dropdown.Item as={Link} to="/trainings">
             Trainings
+          </Dropdown.Item>
+          <Dropdown.Item as={Link} to="/appraisals">
+            Appraisal Report
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
@@ -192,8 +171,7 @@ function MenuBar() {
       </Menu.Menu>
     </Menu>
   ) : null;
-  console.log(user.username);
   return menuBar;
 }
 
-export default MenuBar;
+export default UserMenu;

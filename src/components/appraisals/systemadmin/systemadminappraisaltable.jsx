@@ -13,7 +13,7 @@ import { MdCreditScore } from "react-icons/md";
 import RatingScale from "../ratingscale";
 import TotalMeanScore from "../totalmeanscore";
 
-const SupervisorAppraisalTable = ({
+const SystemAdminAppraisalTable = ({
   targets,
   totalSelfScore,
   totalSupervisorScore,
@@ -144,4 +144,4 @@ const SupervisorAppraisalTable = ({
   );
 };
 
-export default SupervisorAppraisalTable;
+export default SystemAdminAppraisalTable;

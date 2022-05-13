@@ -24,6 +24,30 @@ export const LOAD_TARGETS = gql`
   }
 `;
 
+export const LOAD_APPRAISALS = gql`
+  query ($userId: ID!) {
+    getUser(userId: $userId) {
+      id
+      targets {
+        id
+        targetname
+        targetno
+        startdate
+        enddate
+        agreedPerformance
+        performanceIndicator
+        task {
+          taskname
+        }
+        selfScore
+        achievedResult
+        supervisorScore
+        jointScore
+      }
+    }
+  }
+`;
+
 export const ALL_TARGETS = gql`
   query getTargets {
     getTargets {
@@ -39,6 +63,7 @@ export const ALL_TARGETS = gql`
         task {
           taskname
         }
+
         selfScore
         supervisorScore
         jointScore
@@ -71,7 +96,7 @@ export const LOAD_TARGET = gql`
 
 //Add Component Project
 export const ADD_TARGET = gql`
-  mutation createProject(
+  mutation createTarget(
     $targetno: String!
     $targetname: String!
     $task: String!
@@ -117,6 +142,20 @@ export const useTargets = (userId) => {
 };
 
 //Targets
+export const useAppraisal = (userId) => {
+  const { data, error, loading } = useQuery(LOAD_APPRAISALS, {
+    variables: {
+      userId,
+    },
+  });
+  return {
+    data,
+    error,
+    loading,
+  };
+};
+
+//Targets
 export const useTarget = (targetId) => {
   const { data, error, loading } = useQuery(LOAD_TARGET, {
     variables: {
@@ -131,7 +170,7 @@ export const useTarget = (targetId) => {
 };
 
 //Update Component Target
-export const UPDATE_TARGET = gql`
+export const UPDATE_SELFSCORE = gql`
   mutation updateTarget(
     $targetId: ID!
     $selfScore: String!
@@ -142,16 +181,38 @@ export const UPDATE_TARGET = gql`
       target: { selfScore: $selfScore, achievedResult: $achievedResult }
     ) {
       id
-      targetno
-      targetname
-      agreedPerformance
-      performanceIndicator
-      startdate
-      enddate
-      selfScore
-      supervisorScore
-      jointScore
-      username
+    }
+  }
+`;
+
+//Update Component Target
+export const UPDATE_SUPERVISORSCORE = gql`
+  mutation updateTarget($targetId: ID!, $supervisorScore: String!) {
+    updateTarget(
+      targetId: $targetId
+      target: { supervisorScore: $supervisorScore }
+    ) {
+      id
+    }
+  }
+`;
+
+//Update Component Target
+export const UPDATE_JOINTSCORE = gql`
+  mutation updateTarget($targetId: ID!, $jointScore: String!) {
+    updateTarget(targetId: $targetId, target: { jointScore: $jointScore }) {
+      id
+    }
+  }
+`;
+
+export const UPDATE_TARGET = gql`
+  mutation updateTarget($targetId: ID!, $supervisorScore: String!) {
+    updateTarget(
+      targetId: $targetId
+      target: { supervisorScore: $supervisorScore }
+    ) {
+      id
     }
   }
 `;

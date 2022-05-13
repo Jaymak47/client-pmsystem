@@ -14,16 +14,16 @@ import { useForm } from "../../utils/hooks";
 import { useTargets } from "../../graphql/targets";
 import { useTasks } from "../../graphql/tasks";
 import AddTarget from "./addtarget";
+import { useHistory } from "react-router";
 
 const Targets = () => {
   const user = useContext(AuthContext);
-
+  const history = useHistory();
   const [targets, setTargets] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [Addrecord, setAddRecord] = useState("");
 
   const { id: userId } = user.user;
-
   const {
     data: tasksdata,
     loading: loadingTasks,
@@ -36,7 +36,11 @@ const Targets = () => {
     }
   }, [tasksdata]);
 
-  const { data: targetsdata, loading } = useTargets(userId);
+  const {
+    data: targetsdata,
+    loading,
+    error: targetsError,
+  } = useTargets(userId);
   //Load Data from the Server
   useEffect(() => {
     if (targetsdata) {
@@ -81,6 +85,7 @@ const Targets = () => {
     },
     onError(err) {
       if (err) {
+        // console.log(err.networkError.result.errors);
         return error;
       }
     },
@@ -135,6 +140,10 @@ const Targets = () => {
     startdate,
     enddate,
   } = values;
+
+  const handleBack = () => {
+    history.push("/dashboard");
+  };
 
   return (
     <div>
@@ -191,6 +200,14 @@ const Targets = () => {
                 name="Targets"
                 userId={userId}
               />
+
+              <>
+                <Col className="md-2">
+                  <Button variant="warning" onClick={handleBack}>
+                    Back
+                  </Button>
+                </Col>
+              </>
             </Row>
             <Row className="m-3">
               <Pagination

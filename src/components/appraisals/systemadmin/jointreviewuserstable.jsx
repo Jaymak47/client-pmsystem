@@ -35,7 +35,9 @@ const JointreviewUsersTable = ({
         <OverlayTrigger
           overlay={<Tooltip id={`tooltip-top`}>Appraise Employee</Tooltip>}
         >
-          <Link to={`/jointreview/${user.id}`}>{user.payrollno}</Link>
+          <Link to={`/systemadminjointreviewappraisal/${user.id}`}>
+            {user.payrollno}
+          </Link>
         </OverlayTrigger>
       ),
     },
